@@ -4,19 +4,19 @@ import com.eseo.lagence.lagence.UserAccount;
 
 public class Accommodation {
 
-    private int id;
+    private Integer id;
     private String name;
-    private double price;
+    private Double price;
     private String description;
     private String location;
-    private int numberOfRooms;
-    private int size;
+    private Integer numberOfRooms;
+    private Integer size;
     private boolean isRented;
-    private UserAccount rentedUser;
+    private UserAccount tenant;
 
 
-    public Accommodation(int id, String name, double price, String description, //
-                         String location, int numberOfRooms, int size, boolean isRented, UserAccount rentedUser) {
+    public Accommodation(Integer id, String name, Double price, String description, //
+                         String location, Integer numberOfRooms, Integer size, boolean isRented, UserAccount tenant) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -25,10 +25,10 @@ public class Accommodation {
         this.numberOfRooms = numberOfRooms;
         this.size = size;
         this.isRented = isRented;
-        this.rentedUser = rentedUser;
+        this.tenant = tenant;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -40,11 +40,11 @@ public class Accommodation {
         this.name = name;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -64,19 +64,19 @@ public class Accommodation {
         this.location = location;
     }
 
-    public int getNumberOfRooms() {
+    public Integer getNumberOfRooms() {
         return numberOfRooms;
     }
 
-    public void setNumberOfRooms(int numberOfRooms) {
+    public void setNumberOfRooms(Integer numberOfRooms) {
         this.numberOfRooms = numberOfRooms;
     }
 
-    public int getSize() {
+    public Integer getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(Integer size) {
         this.size = size;
     }
 
@@ -88,15 +88,15 @@ public class Accommodation {
         isRented = rented;
     }
 
-    public UserAccount getRentedUser() {
-        return rentedUser;
+    public UserAccount getTenant() {
+        return tenant;
     }
 
-    public void setRentedUser(UserAccount rentedUser) {
-        this.rentedUser = rentedUser;
+    public void setTenant(UserAccount tenant) {
+        this.tenant = tenant;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
