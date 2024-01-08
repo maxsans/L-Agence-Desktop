@@ -6,14 +6,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-public class AccommodationModificationWindow {
+public class ModificationAccommodationScene {
 
     private Stage stage;
     private TextField nameField;
     private TextField priceField;
     private TextField locationField;
 
-    public AccommodationModificationWindow(Accommodation accommodation) {
+    public ModificationAccommodationScene(Accommodation accommodation) {
         stage = new Stage();
 
         // Créer un layout HBox pour placer les champs de texte
