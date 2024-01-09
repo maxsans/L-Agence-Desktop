@@ -85,7 +85,7 @@ public class HelloApplication extends Application {
             System.out.println("Add Button Clicked");
         }
         else if (button == accommodationView.getModifyButton()){
-            System.out.println("getModifyButton Button Clicked" + id);
+            System.out.println("getModifyButton Button Clicked : " + id);
         }
         else{
             // Handle other buttons if needed

@@ -108,7 +108,8 @@ public class AccommodationView {
 
         this.addButton = new Button();
         addButton.setGraphic(addButtonLabel);
-        buttonClickHandler.accept(addButton, 0);
+        addButton.setOnAction(event -> {buttonClickHandler.accept(addButton, 1);});
+
 
         // Create a VBox to contain the button
         VBox addBox = new VBox(addButton);
