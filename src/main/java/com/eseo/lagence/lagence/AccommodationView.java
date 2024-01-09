@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
@@ -12,12 +11,34 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
 import java.io.IOException;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
-public class AccommodationScene {
+public class AccommodationView {
 
+    private BiConsumer<Button, Integer> buttonClickHandler;
+
+    private Button addButton;
+    private Button ModifyButton;
+    private Button deleteButton;
+
+    public Button getAddButton() {
+        return addButton;
+    }
+    public Button getModifyButton() {
+        return ModifyButton;
+    }
+    public Button getDeleteButton() {
+        return deleteButton;
+    }
+
+
+    public AccommodationView(BiConsumer<Button, Integer> buttonClickHandler){
+        this.buttonClickHandler = buttonClickHandler;
+    }
     private Button createDeleteButton() {
         FontAwesomeIconView iconView = new FontAwesomeIconView(FontAwesomeIcon.TRASH);
         iconView.setSize("1.5em");
@@ -29,22 +50,23 @@ public class AccommodationScene {
     }
 
     private TableCell createDeleteCell(){
+        this.deleteButton = createDeleteButton();
+
         return new TableCell<Accommodation, Accommodation>() {
-            final Button button = createDeleteButton();
 
             {
-                button.setOnAction(event -> {
+                deleteButton.setOnAction(event -> {
                     Accommodation accommodation = getTableView().getItems().get(getIndex());
-                    System.out.println("ID de la ligne : " + accommodation.getId());
+                    buttonClickHandler.accept(deleteButton, accommodation.getId());
                 });
             }
-
             @Override
             protected void updateItem(Accommodation item, boolean empty) {
                 super.updateItem(item, empty);
                 if (!empty) {
-                    button.setUserData(item);
-                    setGraphic(button);
+                    deleteButton.setUserData(item);
+                    setGraphic(deleteButton);
+
                 } else {
                     setGraphic(null);
                 }
@@ -84,11 +106,9 @@ public class AccommodationScene {
         Label addButtonLabel = new Label("Ajouter", addIcon);
         addButtonLabel.setFont(Font.font("Consolas", 20));
 
-        Button addButton = new Button();
+        this.addButton = new Button();
         addButton.setGraphic(addButtonLabel);
-        addButton.setOnAction(event -> {
-            System.out.println("Add Button Clicked");
-        });
+        buttonClickHandler.accept(addButton, 0);
 
         // Create a VBox to contain the button
         VBox addBox = new VBox(addButton);
@@ -96,6 +116,8 @@ public class AccommodationScene {
 
         return addBox;
     }
+
+
 
     private VBox createTable() {
         TableView<Accommodation> tableAccommodation = new TableView<>();
@@ -145,7 +167,7 @@ public class AccommodationScene {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && !row.isEmpty() && event.getButton() == MouseButton.PRIMARY) {
                     Integer index = row.getItem().getId();
-                    System.out.println("Double clic sur l'ID : " + index);
+                    buttonClickHandler.accept(ModifyButton, index);
                 }
             });
             return row;
@@ -158,7 +180,7 @@ public class AccommodationScene {
         return tabBox;
     }
 
-    public Scene createScene() throws IOException {
+    public VBox createBox(){
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);
@@ -171,12 +193,13 @@ public class AccommodationScene {
 
         // Ligne 1
         RowConstraints row1 = new RowConstraints();
-        row1.setPercentHeight(80); // Prend 80% de l'espace restant
+        row1.setPercentHeight(80);
         row1.setVgrow(Priority.ALWAYS);
         gridPane.getRowConstraints().add(row1);
 
         // Ligne 2
         RowConstraints row2 = new RowConstraints();
+        row2.setPercentHeight(10);
         row2.setValignment(VPos.BOTTOM);
         gridPane.getRowConstraints().add(row2);
 
@@ -188,10 +211,16 @@ public class AccommodationScene {
 
         // Ligne 2
         gridPane.add(createAddButton(), 0, 2, 1, 1);
+        VBox vBox = new VBox(gridPane);
 
-        Scene scene = new Scene(gridPane, 1420.00, 500);
-
-        return scene;
+        return vBox;
     }
+
+    private void setButtonClickHandler(Button button, Integer id, BiConsumer<Button, Integer> buttonClickHandler) {
+        button.setOnAction(event -> {
+            buttonClickHandler.accept(button, id);
+        });
+    }
+
 
 }

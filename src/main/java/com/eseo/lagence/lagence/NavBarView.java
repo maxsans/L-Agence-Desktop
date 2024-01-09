@@ -1,0 +1,202 @@
+package com.eseo.lagence.lagence;
+
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+
+import java.util.function.Consumer;
+
+public class NavBarView {
+
+    private VBox navBar;
+    private Consumer<Button> buttonClickHandler;
+    private Button listAccommodationsButton;
+    private Button mailboxButton;
+    private Button usersButton;
+    private Button disconnectButton;
+
+    public NavBarView(Consumer<Button> buttonClickHandler){
+        this.buttonClickHandler = buttonClickHandler;
+    }
+
+    public VBox getNavBar() {
+        if (navBar != null){
+            VBox navBarBox = new VBox(navBar);
+            return navBarBox;
+        }
+        return new VBox();
+    }
+
+
+    public Button getListAccommodationsButton() {
+        return listAccommodationsButton;
+    }
+
+
+    public Button getMailboxButton() {
+        return mailboxButton;
+    }
+
+
+    public Button getUsersButton() {
+        return usersButton;
+    }
+
+
+    public Button getDisconnectButton() {
+        return disconnectButton;
+    }
+
+
+    public VBox createNavBar(){
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setVgap(10);
+        gridPane.setHgap(30);
+
+
+        Label titleLabel = new Label("L'Agence");
+        titleLabel.setFont(Font.font("Tahoma", FontWeight.SEMI_BOLD, 36));
+        titleLabel.setStyle("-fx-text-fill: #18181a;");
+        Image iconLagence = new Image(getClass().getResourceAsStream("/images/logo_Agence.png"));
+        ImageView logoLagence = new ImageView(iconLagence);
+        logoLagence.setFitWidth(38);
+        logoLagence.setFitHeight(38);
+
+        HBox titleBox = new HBox(logoLagence, titleLabel);
+        HBox.setMargin(titleLabel, new Insets(0, 0, 0, 15)); // Adjust the insets as needed
+
+        Button listAccommodationsButton = new Button("");
+        FontAwesomeIconView iconViewHome = new FontAwesomeIconView(FontAwesomeIcon.HOME);
+        iconViewHome.setSize("3em");
+        listAccommodationsButton.setGraphic(iconViewHome);
+        listAccommodationsButton.setStyle(
+                "-fx-background-color: transparent; " +
+                        "-fx-border-color: transparent; " +
+                        "-fx-text-fill: black; " +
+                        "-fx-font-weight: normal;");
+        listAccommodationsButton.setOnMouseEntered(e -> {
+            listAccommodationsButton.setScaleX(1.1);
+            listAccommodationsButton.setScaleY(1.1);
+        });
+        listAccommodationsButton.setOnMouseExited(e -> {
+            listAccommodationsButton.setScaleX(1.0);
+            listAccommodationsButton.setScaleY(1.0);
+        });
+
+        Button mailboxButton = new Button("");
+        FontAwesomeIconView iconViewMailBox = new FontAwesomeIconView(FontAwesomeIcon.ENVELOPE);
+        iconViewMailBox.setSize("3em");
+        mailboxButton.setGraphic(iconViewMailBox);
+        mailboxButton.setStyle(
+                "-fx-background-color: transparent; " +
+                        "-fx-border-color: transparent; " +
+                        "-fx-text-fill: black; " +
+                        "-fx-font-weight: normal;");
+        mailboxButton.setOnMouseEntered(e -> {
+            mailboxButton.setScaleX(1.1);
+            mailboxButton.setScaleY(1.1);
+        });
+        mailboxButton.setOnMouseExited(e -> {
+            mailboxButton.setScaleX(1.0);
+            mailboxButton.setScaleY(1.0);
+        });
+
+        Button usersButton = new Button("");
+        FontAwesomeIconView iconViewUsers = new FontAwesomeIconView(FontAwesomeIcon.USERS);
+        iconViewUsers.setSize("3em");
+        usersButton.setGraphic(iconViewUsers);
+        usersButton.setStyle(
+                "-fx-background-color: transparent; " +
+                        "-fx-border-color: transparent; " +
+                        "-fx-text-fill: black; " +
+                        "-fx-font-weight: normal;");
+        usersButton.setOnMouseEntered(e -> {
+            usersButton.setScaleX(1.1);
+            usersButton.setScaleY(1.1);
+        });
+        usersButton.setOnMouseExited(e -> {
+            usersButton.setScaleX(1.0);
+            usersButton.setScaleY(1.0);
+        });
+
+        Button disconnectButton = new Button("");
+        FontAwesomeIconView iconViewDisconnect = new FontAwesomeIconView(FontAwesomeIcon.SIGN_OUT);
+        iconViewDisconnect.setSize("3em");
+        disconnectButton.setGraphic(iconViewDisconnect);
+        disconnectButton.setStyle(
+                "-fx-background-color: transparent; " +
+                        "-fx-border-color: transparent; " +
+                        "-fx-text-fill: black; " +
+                        "-fx-font-weight: normal;");
+        disconnectButton.setOnMouseEntered(e -> {
+            disconnectButton.setScaleX(1.1);
+            disconnectButton.setScaleY(1.1);
+        });
+        disconnectButton.setOnMouseExited(e -> {
+            disconnectButton.setScaleX(1.0);
+            disconnectButton.setScaleY(1.0);
+        });
+
+        setButtonClickHandler(listAccommodationsButton, buttonClickHandler);
+        setButtonClickHandler(mailboxButton, buttonClickHandler);
+        setButtonClickHandler(usersButton, buttonClickHandler);
+        setButtonClickHandler(disconnectButton, buttonClickHandler);
+
+        this.listAccommodationsButton = listAccommodationsButton;
+        this.mailboxButton = mailboxButton;
+        this.usersButton = usersButton;
+        this.disconnectButton = disconnectButton;
+
+        // Column 0
+        ColumnConstraints col0 = new ColumnConstraints();
+        col0.setPercentWidth(75); // 70% of the space
+        col0.setHalignment(HPos.LEFT);
+        gridPane.getColumnConstraints().add(col0);
+
+
+        // Column 0
+        gridPane.add(titleBox, 0, 0, 1, 1);
+
+        // Column 1
+        gridPane.add(listAccommodationsButton, 1, 0, 1, 1);
+
+        // Column 2
+        gridPane.add(mailboxButton, 2, 0, 1, 1);
+
+        // Column 3
+        gridPane.add(usersButton, 3, 0, 1, 1);
+
+        // Column 4
+        gridPane.add(disconnectButton, 4, 0, 1, 1);
+
+        gridPane.setPadding(new Insets(20,0,20,0));
+
+        gridPane.setStyle("-fx-background-color: #e0e0e0;");
+
+        VBox navBarBox = new VBox(gridPane);
+        this.navBar = navBarBox;
+
+        return navBarBox;
+    }
+
+
+    private void setButtonClickHandler(Button button, Consumer<Button> buttonClickHandler) {
+        button.setOnAction(event -> {
+            buttonClickHandler.accept(button);
+        });
+    }
+
+}
