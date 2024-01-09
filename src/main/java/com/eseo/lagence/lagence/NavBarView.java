@@ -23,6 +23,7 @@ public class NavBarView {
     private VBox navBar;
     private Consumer<Button> buttonClickHandler;
     private Button listAccommodationsButton;
+    private Button bedButton;
     private Button mailboxButton;
     private Button usersButton;
     private Button disconnectButton;
@@ -44,6 +45,9 @@ public class NavBarView {
         return listAccommodationsButton;
     }
 
+    public Button getBedButton() {
+        return bedButton;
+    }
 
     public Button getMailboxButton() {
         return mailboxButton;
@@ -78,7 +82,7 @@ public class NavBarView {
         HBox titleBox = new HBox(logoLagence, titleLabel);
         HBox.setMargin(titleLabel, new Insets(0, 0, 0, 15)); // Adjust the insets as needed
 
-        Button listAccommodationsButton = new Button("");
+        listAccommodationsButton = new Button("");
         FontAwesomeIconView iconViewHome = new FontAwesomeIconView(FontAwesomeIcon.HOME);
         iconViewHome.setSize("3em");
         listAccommodationsButton.setGraphic(iconViewHome);
@@ -96,7 +100,25 @@ public class NavBarView {
             listAccommodationsButton.setScaleY(1.0);
         });
 
-        Button mailboxButton = new Button("");
+        bedButton = new Button("");
+        FontAwesomeIconView iconViewBedBox = new FontAwesomeIconView(FontAwesomeIcon.BED);
+        iconViewBedBox.setSize("3em");
+        bedButton.setGraphic(iconViewBedBox);
+        bedButton.setStyle(
+                "-fx-background-color: transparent; " +
+                        "-fx-border-color: transparent; " +
+                        "-fx-text-fill: black; " +
+                        "-fx-font-weight: normal;");
+        bedButton.setOnMouseEntered(e -> {
+            bedButton.setScaleX(1.1);
+            bedButton.setScaleY(1.1);
+        });
+        bedButton.setOnMouseExited(e -> {
+            bedButton.setScaleX(1.0);
+            bedButton.setScaleY(1.0);
+        });
+
+        mailboxButton = new Button("");
         FontAwesomeIconView iconViewMailBox = new FontAwesomeIconView(FontAwesomeIcon.ENVELOPE);
         iconViewMailBox.setSize("3em");
         mailboxButton.setGraphic(iconViewMailBox);
@@ -114,7 +136,7 @@ public class NavBarView {
             mailboxButton.setScaleY(1.0);
         });
 
-        Button usersButton = new Button("");
+        usersButton = new Button("");
         FontAwesomeIconView iconViewUsers = new FontAwesomeIconView(FontAwesomeIcon.USERS);
         iconViewUsers.setSize("3em");
         usersButton.setGraphic(iconViewUsers);
@@ -132,7 +154,7 @@ public class NavBarView {
             usersButton.setScaleY(1.0);
         });
 
-        Button disconnectButton = new Button("");
+        disconnectButton = new Button("");
         FontAwesomeIconView iconViewDisconnect = new FontAwesomeIconView(FontAwesomeIcon.SIGN_OUT);
         iconViewDisconnect.setSize("3em");
         disconnectButton.setGraphic(iconViewDisconnect);
@@ -151,14 +173,11 @@ public class NavBarView {
         });
 
         setButtonClickHandler(listAccommodationsButton, buttonClickHandler);
+        setButtonClickHandler(bedButton, buttonClickHandler);
         setButtonClickHandler(mailboxButton, buttonClickHandler);
         setButtonClickHandler(usersButton, buttonClickHandler);
         setButtonClickHandler(disconnectButton, buttonClickHandler);
 
-        this.listAccommodationsButton = listAccommodationsButton;
-        this.mailboxButton = mailboxButton;
-        this.usersButton = usersButton;
-        this.disconnectButton = disconnectButton;
 
         // Column 0
         ColumnConstraints col0 = new ColumnConstraints();
@@ -174,13 +193,16 @@ public class NavBarView {
         gridPane.add(listAccommodationsButton, 1, 0, 1, 1);
 
         // Column 2
-        gridPane.add(mailboxButton, 2, 0, 1, 1);
+        gridPane.add(bedButton, 2, 0, 1, 1);
 
         // Column 3
-        gridPane.add(usersButton, 3, 0, 1, 1);
+        gridPane.add(mailboxButton, 3, 0, 1, 1);
 
         // Column 4
-        gridPane.add(disconnectButton, 4, 0, 1, 1);
+        gridPane.add(usersButton, 4, 0, 1, 1);
+
+        // Column 5
+        gridPane.add(disconnectButton, 5, 0, 1, 1);
 
         gridPane.setPadding(new Insets(20,0,20,0));
 

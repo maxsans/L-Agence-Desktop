@@ -14,6 +14,11 @@ public class ModificationAccommodationView {
     private TextField nameField;
     private TextField priceField;
     private TextField locationField;
+    private Button buttonSave;
+
+    public Button getButtonSave() {
+        return buttonSave;
+    }
 
     public ModificationAccommodationView(Consumer<Button> buttonClickHandler){
         this.buttonClickHandler = buttonClickHandler;
@@ -37,13 +42,13 @@ public class ModificationAccommodationView {
         locationField.setPromptText("Localisation");
 
         // Créer un bouton pour valider les modifications
-        Button buttonSave = new Button("Valider");
+        buttonSave = new Button("Valider");
         buttonSave.setOnAction(event -> {
             // Mise à jour des données de l'hébergement
             accommodation.setName(nameField.getText());
             accommodation.setPrice(Double.valueOf(priceField.getText()));
             accommodation.setLocation(locationField.getText());
-
+            buttonClickHandler.accept(buttonSave);
         });
 
         VBox vbox = new VBox(nameField,priceField,locationField,buttonSave);

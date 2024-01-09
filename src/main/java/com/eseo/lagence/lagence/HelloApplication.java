@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -13,10 +14,6 @@ import java.io.IOException;
 
 
 public class HelloApplication extends Application {
-    private Button listAccommodationsButton;
-    private Button mailboxButton;
-    private Button usersButton;
-    private Button disconnectButton;
 
     private NavBarView navBarView;
 
@@ -26,14 +23,18 @@ public class HelloApplication extends Application {
 
     private Stage stage;
 
+    private Stage modalStage;
+
+
 
     @Override
     public void start(Stage stage) throws IOException {
 
-        this.navBarView = new NavBarView(this::handleButtonClickNavBar);
+        this.navBarView = new NavBarView(this::handleButtonClick);
         this.accommodationView = new AccommodationView(this::handleButtonClickTableAccommodation);
-        this.modificationAccommodationView = new ModificationAccommodationView(this::handleButtonClickNavBar);
+        this.modificationAccommodationView = new ModificationAccommodationView(this::handleButtonClick);
 
+        this.modalStage = new Stage();
 
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 
@@ -45,7 +46,6 @@ public class HelloApplication extends Application {
         stage.setMinHeight(1000.00);
         stage.setMaximized(true);
 
-
         Image icon = new Image(getClass().getResourceAsStream("/images/logo_Agence.png"));
         stage.getIcons().add(icon);
 
@@ -55,11 +55,14 @@ public class HelloApplication extends Application {
     }
 
 
-    private void handleButtonClickNavBar(Button button) {
+    private void handleButtonClick(Button button) {
         if (button == navBarView.getListAccommodationsButton()){
             VBox vBoxAccommodation = new VBox(navBarView.getNavBar(), accommodationView.createBox());
             Scene sceneAccommodation = new Scene(vBoxAccommodation);
             stage.setScene(sceneAccommodation);
+        }
+        else if (button == navBarView.getBedButton()){
+            System.out.println("BedButton Button Clicked");
         }
         else if (button == navBarView.getMailboxButton()){
             VBox vBoxModificationAccommodation = new VBox(navBarView.getNavBar(), modificationAccommodationView.createBox(new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T"))));
@@ -72,6 +75,10 @@ public class HelloApplication extends Application {
         else if (button == navBarView.getDisconnectButton()){
             System.out.println("disconnectButton Button Clicked");
         }
+        else if (button == modificationAccommodationView.getButtonSave()){
+            System.out.println("button Save Clicked");
+            modalStage.close();
+        }
         else{
             // Handle other buttons if needed
         }
@@ -83,6 +90,15 @@ public class HelloApplication extends Application {
         }
         else if (button == accommodationView.getAddButton()){
             System.out.println("Add Button Clicked");
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+            modalStage.setTitle("Modal Window");
+
+            VBox modalContent = modificationAccommodationView.createBox(new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T")));
+
+            Scene modalScene = new Scene(modalContent, 1000, 500);
+            modalStage.setScene(modalScene);
+
+            modalStage.show();
         }
         else if (button == accommodationView.getModifyButton()){
             System.out.println("getModifyButton Button Clicked : " + id);

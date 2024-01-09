@@ -147,8 +147,8 @@ public class AccommodationView {
         colPrice.setMinWidth(100.00);
         colPrice.setMaxWidth(100.00);
         colPrice.setStyle("-fx-alignment: CENTER-RIGHT;");
-        colLocation.setMinWidth(670.00);
-        colLocation.setMaxWidth(670.00);
+        colLocation.setMinWidth(655.00);
+        colLocation.setMaxWidth(655.00);
         colDelete.setStyle("-fx-alignment: CENTER;");
         colDelete.setMinWidth(40.00);
         colDelete.setMaxWidth(40.00);
@@ -157,6 +157,30 @@ public class AccommodationView {
 
         ObservableList<Accommodation> data = FXCollections.observableArrayList(
                 new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T")),
+                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
+                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84, true, new UserAccount(2, "test2@gmail.com", "test2", "T")),
+                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T")),
+                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
+                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84, true, new UserAccount(2, "test2@gmail.com", "test2", "T")),
+                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T")),
+                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
+                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T")),
+                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
+                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84, true, new UserAccount(2, "test2@gmail.com", "test2", "T")),
+                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
+                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84, true, new UserAccount(2, "test2@gmail.com", "test2", "T")),
+                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T")),
+                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
+                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T")),
+                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
+                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84, true, new UserAccount(2, "test2@gmail.com", "test2", "T")),
+                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
+                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84, true, new UserAccount(2, "test2@gmail.com", "test2", "T")),
+                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T")),
+                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
+                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T")),
+                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
+                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84, true, new UserAccount(2, "test2@gmail.com", "test2", "T")),
                 new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
                 new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84, true, new UserAccount(2, "test2@gmail.com", "test2", "T"))
         );
