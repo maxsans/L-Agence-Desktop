@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 public class ModalTenant {
     private Stage modalStage;
 
-    public void openModal(Accommodation selectedAccommodation) {
+    public void openModal(Rental selectedRental) {
         modalStage = new Stage();
         modalStage.initModality(Modality.APPLICATION_MODAL);
         modalStage.setResizable(false);
@@ -17,10 +17,10 @@ public class ModalTenant {
         VBox vbox = new VBox();
         vbox.setSpacing(10);
 
-        Label infoLabel = new Label("Information: " + selectedAccommodation.getId());
+        Label infoLabel = new Label(selectedRental.getUser().getLastName() + " " + selectedRental.getUser().getFirstName());
 
         vbox.getChildren().add(infoLabel);
-        Scene modalScene = new Scene(vbox, 1000,500); // Taille fixe
+        Scene modalScene = new Scene(vbox, 1000,500);
 
         modalStage.setScene(modalScene);
         modalStage.setTitle("Fiche locataire");

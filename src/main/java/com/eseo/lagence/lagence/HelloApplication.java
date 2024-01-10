@@ -72,7 +72,7 @@ public class HelloApplication extends Application {
             stage.setScene(sceneTenant);
         }
         else if (button == navBarView.getMailboxButton()){
-            VBox vBoxModificationAccommodation = new VBox(navBarView.getNavBar(), modificationAccommodationView.createBox(new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T"))));
+            VBox vBoxModificationAccommodation = new VBox(navBarView.getNavBar(), modificationAccommodationView.createBox(new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true)));
             Scene sceneModificationAccommodation = new Scene(vBoxModificationAccommodation, currentWidth, currentHeight);
             stage.setScene(sceneModificationAccommodation);
         }
@@ -100,7 +100,7 @@ public class HelloApplication extends Application {
             modalStage.initModality(Modality.APPLICATION_MODAL);
             modalStage.setTitle("Modal Window");
 
-            VBox modalContent = modificationAccommodationView.createBox(new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T")));
+            VBox modalContent = modificationAccommodationView.createBox(new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true));
 
             Scene modalScene = new Scene(modalContent, 1000, 500);
             modalStage.setScene(modalScene);

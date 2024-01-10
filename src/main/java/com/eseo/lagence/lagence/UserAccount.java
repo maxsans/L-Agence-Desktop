@@ -48,5 +48,4 @@ public class UserAccount {
         this.lastName = lastName;
     }
 
-
 }
