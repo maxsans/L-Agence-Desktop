@@ -11,10 +11,9 @@ public class Accommodation {
     private String location;
     private Integer numberOfRooms;
     private Integer size;
-    private boolean isRented;
 
     public Accommodation(Integer id, String name, Double price, String description, //
-                         String location, Integer numberOfRooms, Integer size, boolean isRented) {
+                         String location, Integer numberOfRooms, Integer size) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -22,7 +21,6 @@ public class Accommodation {
         this.location = location;
         this.numberOfRooms = numberOfRooms;
         this.size = size;
-        this.isRented = isRented;
     }
 
     public Integer getId() {
@@ -77,13 +75,6 @@ public class Accommodation {
         this.size = size;
     }
 
-    public boolean isRented() {
-        return isRented;
-    }
-
-    public void setRented(boolean rented) {
-        isRented = rented;
-    }
 
     public void setId(Integer id) {
         this.id = id;

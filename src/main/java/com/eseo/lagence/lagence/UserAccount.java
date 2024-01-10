@@ -1,11 +1,15 @@
 package com.eseo.lagence.lagence;
 
+import java.util.List;
+
 public class UserAccount {
 
     private int id;
     private String email;
     private String firstName;
     private String lastName;
+
+
 
     public UserAccount(int id, String email, //
                        String firstName, String lastName) {
