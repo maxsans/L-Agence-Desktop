@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
@@ -109,6 +110,11 @@ public class NavBarView {
                         "-fx-border-color: transparent; " +
                         "-fx-text-fill: black; " +
                         "-fx-font-weight: normal;");
+
+        Tooltip tooltip = new Tooltip("Espace Locataires");
+
+        Tooltip.install(bedButton, tooltip);
+
         bedButton.setOnMouseEntered(e -> {
             bedButton.setScaleX(1.1);
             bedButton.setScaleY(1.1);

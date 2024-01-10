@@ -21,6 +21,8 @@ public class HelloApplication extends Application {
 
     private ModificationAccommodationView modificationAccommodationView;
 
+    private TenantView tenantView;
+
     private Stage stage;
 
     private Stage modalStage;
@@ -33,6 +35,7 @@ public class HelloApplication extends Application {
         this.navBarView = new NavBarView(this::handleButtonClick);
         this.accommodationView = new AccommodationView(this::handleButtonClickTableAccommodation);
         this.modificationAccommodationView = new ModificationAccommodationView(this::handleButtonClick);
+        this.tenantView = new TenantView();
 
         this.modalStage = new Stage();
 
@@ -56,17 +59,21 @@ public class HelloApplication extends Application {
 
 
     private void handleButtonClick(Button button) {
+        double currentWidth = stage.getScene().getWidth();
+        double currentHeight = stage.getScene().getHeight();
         if (button == navBarView.getListAccommodationsButton()){
             VBox vBoxAccommodation = new VBox(navBarView.getNavBar(), accommodationView.createBox());
-            Scene sceneAccommodation = new Scene(vBoxAccommodation);
+            Scene sceneAccommodation = new Scene(vBoxAccommodation, currentWidth, currentHeight);
             stage.setScene(sceneAccommodation);
         }
         else if (button == navBarView.getBedButton()){
-            System.out.println("BedButton Button Clicked");
+            VBox vBoxTenant = new VBox(navBarView.getNavBar(), tenantView.createBox());
+            Scene sceneTenant = new Scene(vBoxTenant, currentWidth, currentHeight);
+            stage.setScene(sceneTenant);
         }
         else if (button == navBarView.getMailboxButton()){
             VBox vBoxModificationAccommodation = new VBox(navBarView.getNavBar(), modificationAccommodationView.createBox(new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T"))));
-            Scene sceneModificationAccommodation = new Scene(vBoxModificationAccommodation);
+            Scene sceneModificationAccommodation = new Scene(vBoxModificationAccommodation, currentWidth, currentHeight);
             stage.setScene(sceneModificationAccommodation);
         }
         else if (button == navBarView.getUsersButton()){
