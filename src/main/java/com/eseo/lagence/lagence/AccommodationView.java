@@ -22,14 +22,14 @@ public class AccommodationView {
     private BiConsumer<Button, Integer> buttonClickHandler;
 
     private Button addButton;
-    private Button ModifyButton;
+    private Button modifyButton = new Button("modify"); //make the button unique for the button event listener
     private Button deleteButton;
 
     public Button getAddButton() {
         return addButton;
     }
     public Button getModifyButton() {
-        return ModifyButton;
+        return modifyButton;
     }
     public Button getDeleteButton() {
         return deleteButton;
@@ -45,17 +45,30 @@ public class AccommodationView {
 
         Button button = new Button();
         button.setGraphic(iconView);
-
+        button.setStyle(
+                "-fx-background-color: transparent; " +
+                        "-fx-border-color: transparent; " +
+                        "-fx-text-fill: black; " +
+                        "-fx-font-weight: normal;");
+        button.setOnMouseEntered(e -> {
+            button.setScaleX(1.2);
+            button.setScaleY(1.2);
+        });
+        button.setOnMouseExited(e -> {
+            button.setScaleX(1.0);
+            button.setScaleY(1.0);
+        });
         return button;
     }
 
     private TableCell createDeleteCell(){
-        this.deleteButton = createDeleteButton();
+        deleteButton = createDeleteButton(); //make the button unique for the button event listener
 
         return new TableCell<Accommodation, Accommodation>() {
+            private final Button delButton = createDeleteButton();
 
             {
-                deleteButton.setOnAction(event -> {
+                delButton.setOnAction(event -> {
                     Accommodation accommodation = getTableView().getItems().get(getIndex());
                     buttonClickHandler.accept(deleteButton, accommodation.getId());
                 });
@@ -64,9 +77,8 @@ public class AccommodationView {
             protected void updateItem(Accommodation item, boolean empty) {
                 super.updateItem(item, empty);
                 if (!empty) {
-                    deleteButton.setUserData(item);
-                    setGraphic(deleteButton);
-
+                    delButton.setUserData(item);
+                    setGraphic(delButton);
                 } else {
                     setGraphic(null);
                 }
@@ -142,13 +154,16 @@ public class AccommodationView {
 
         colId.setMinWidth(60.00);
         colId.setMaxWidth(60.00);
+        colId.setStyle("-fx-alignment: CENTER;");
         colName.setMinWidth(530.00);
         colName.setMaxWidth(530.00);
+        colName.setStyle("-fx-alignment: CENTER;");
         colPrice.setMinWidth(100.00);
         colPrice.setMaxWidth(100.00);
         colPrice.setStyle("-fx-alignment: CENTER-RIGHT;");
         colLocation.setMinWidth(655.00);
         colLocation.setMaxWidth(655.00);
+        colLocation.setStyle("-fx-alignment: CENTER;");
         colDelete.setStyle("-fx-alignment: CENTER;");
         colDelete.setMinWidth(40.00);
         colDelete.setMaxWidth(40.00);
@@ -156,34 +171,25 @@ public class AccommodationView {
         tableAccommodation.getColumns().addAll(colId, colName, colPrice, colLocation, colDelete);
 
         ObservableList<Accommodation> data = FXCollections.observableArrayList(
-                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T")),
-                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
-                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84, true, new UserAccount(2, "test2@gmail.com", "test2", "T")),
-                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T")),
-                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
-                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84, true, new UserAccount(2, "test2@gmail.com", "test2", "T")),
-                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T")),
-                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
-                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T")),
-                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
-                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84, true, new UserAccount(2, "test2@gmail.com", "test2", "T")),
-                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
-                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84, true, new UserAccount(2, "test2@gmail.com", "test2", "T")),
-                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T")),
-                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
-                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T")),
-                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
-                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84, true, new UserAccount(2, "test2@gmail.com", "test2", "T")),
-                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
-                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84, true, new UserAccount(2, "test2@gmail.com", "test2", "T")),
-                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T")),
-                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
-                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36, true, new UserAccount(1, "test@gmail.com", "test", "T")),
-                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
-                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84, true, new UserAccount(2, "test2@gmail.com", "test2", "T")),
-                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52, false, null),
-                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84, true, new UserAccount(2, "test2@gmail.com", "test2", "T"))
-        );
+                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36),
+                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
+                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84),
+                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36 ),
+                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
+                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84),
+                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36),
+                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
+                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36),
+                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36),
+                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
+                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84),
+                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36 ),
+                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
+                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84),
+                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36),
+                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
+                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36)
+                );
 
         tableAccommodation.setItems(data);
 
@@ -192,14 +198,14 @@ public class AccommodationView {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && !row.isEmpty() && event.getButton() == MouseButton.PRIMARY) {
                     Integer index = row.getItem().getId();
-                    buttonClickHandler.accept(ModifyButton, index);
+                    buttonClickHandler.accept(modifyButton, index);
                 }
             });
             return row;
         });
         tableAccommodation.setPrefHeight(tableAccommodation.getItems().size() * 35 + 30);
         tableAccommodation.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
+        tableAccommodation.setStyle("-fx-background-color: #fff5e0;");
         VBox tabBox = new VBox(tableAccommodation);
         tabBox.setAlignment(Pos.CENTER);
         return tabBox;
