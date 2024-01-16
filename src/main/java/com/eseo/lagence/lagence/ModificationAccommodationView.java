@@ -1,11 +1,8 @@
 package com.eseo.lagence.lagence;
 
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.util.function.Consumer;
 
@@ -38,7 +35,7 @@ public class ModificationAccommodationView {
 
         // Créer un champ de texte pour la localisation
         locationField = new TextField();
-        locationField.setText(accommodation.getLocation());
+        locationField.setText(accommodation.getAddress());
         locationField.setPromptText("Localisation");
 
         // Créer un bouton pour valider les modifications
@@ -47,7 +44,7 @@ public class ModificationAccommodationView {
             // Mise à jour des données de l'hébergement
             accommodation.setName(nameField.getText());
             accommodation.setPrice(Double.valueOf(priceField.getText()));
-            accommodation.setLocation(locationField.getText());
+            accommodation.setAddress(locationField.getText());
             buttonClickHandler.accept(buttonSave);
         });
 

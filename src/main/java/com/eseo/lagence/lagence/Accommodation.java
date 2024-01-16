@@ -1,6 +1,5 @@
 package com.eseo.lagence.lagence;
-
-import com.eseo.lagence.lagence.UserAccount;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Accommodation {
 
@@ -8,19 +7,37 @@ public class Accommodation {
     private String name;
     private Double price;
     private String description;
-    private String location;
-    private Integer numberOfRooms;
-    private Integer size;
+    private String address;
+    private Integer roomsCount;
+    private Integer surface;
+    private String type;
+    private Integer chargesPrice;
+
+
 
     public Accommodation(Integer id, String name, Double price, String description, //
-                         String location, Integer numberOfRooms, Integer size) {
+                         String address, Integer roomsCount, Integer surface) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.description = description;
-        this.location = location;
-        this.numberOfRooms = numberOfRooms;
-        this.size = size;
+        this.address = address;
+        this.roomsCount = roomsCount;
+        this.surface = surface;
+    }
+
+
+
+
+
+    public static Accommodation fromJson(String json) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(json, Accommodation.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public Integer getId() {
@@ -51,28 +68,28 @@ public class Accommodation {
         this.description = description;
     }
 
-    public String getLocation() {
-        return location;
+    public String getAddress() {
+        return address;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public Integer getNumberOfRooms() {
-        return numberOfRooms;
+    public Integer getRoomsCount() {
+        return roomsCount;
     }
 
-    public void setNumberOfRooms(Integer numberOfRooms) {
-        this.numberOfRooms = numberOfRooms;
+    public void setRoomsCount(Integer roomsCount) {
+        this.roomsCount = roomsCount;
     }
 
-    public Integer getSize() {
-        return size;
+    public Integer getSurface() {
+        return surface;
     }
 
-    public void setSize(Integer size) {
-        this.size = size;
+    public void setSurface(Integer surface) {
+        this.surface = surface;
     }
 
 
@@ -80,4 +97,20 @@ public class Accommodation {
         this.id = id;
     }
 
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Integer getChargesPrice() {
+        return chargesPrice;
+    }
+
+    public void setChargesPrice(Integer chargesPrice) {
+        this.chargesPrice = chargesPrice;
+    }
 }

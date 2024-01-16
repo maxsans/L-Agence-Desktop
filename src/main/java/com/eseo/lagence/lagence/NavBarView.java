@@ -14,6 +14,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -77,6 +78,7 @@ public class NavBarView {
         titleLabel.setStyle("-fx-text-fill: #18181a;");
         Image iconLagence = new Image(getClass().getResourceAsStream("/images/logo_Agence.png"));
         ImageView logoLagence = new ImageView(iconLagence);
+
         logoLagence.setFitWidth(38);
         logoLagence.setFitHeight(38);
 
@@ -104,6 +106,7 @@ public class NavBarView {
         bedButton = new Button("");
         FontAwesomeIconView iconViewBedBox = new FontAwesomeIconView(FontAwesomeIcon.BED);
         iconViewBedBox.setSize("3em");
+
         bedButton.setGraphic(iconViewBedBox);
         bedButton.setStyle(
                 "-fx-background-color: transparent; " +

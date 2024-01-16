@@ -37,7 +37,7 @@ public class Request {
     }
 
     public String getLocation() {
-        return accommodation.getLocation();
+        return accommodation.getAddress();
     }
 
 

@@ -11,6 +11,8 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -132,7 +134,7 @@ public class AccommodationView {
 
 
 
-    private VBox createTable() {
+    private VBox createTable(ObservableList<Accommodation> data) {
         TableView<Accommodation> tableAccommodation = new TableView<>();
         tableAccommodation.setMinWidth(1402);
         tableAccommodation.setMaxWidth(1402);
@@ -147,7 +149,7 @@ public class AccommodationView {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
-        colLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
+        colLocation.setCellValueFactory(new PropertyValueFactory<>("address"));
         colDelete.setCellFactory(param -> createDeleteCell());
 
         colPrice.setCellFactory(tc -> createPriceCell());
@@ -170,7 +172,7 @@ public class AccommodationView {
 
         tableAccommodation.getColumns().addAll(colId, colName, colPrice, colLocation, colDelete);
 
-        ObservableList<Accommodation> data = FXCollections.observableArrayList(
+        /*ObservableList<Accommodation> data = FXCollections.observableArrayList(
                 new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36),
                 new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
                 new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84),
@@ -190,7 +192,7 @@ public class AccommodationView {
                 new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
                 new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36)
                 );
-
+*/
         tableAccommodation.setItems(data);
 
         tableAccommodation.setRowFactory(tv -> {
@@ -211,12 +213,12 @@ public class AccommodationView {
         return tabBox;
     }
 
-    public VBox createBox(){
+    public VBox createBox(RequestService requestService){
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);
         gridPane.setVgap(10);
-
+        ObservableList<Accommodation> accommodations = requestService.getAccommodations();
         // Ligne 0
         RowConstraints row0 = new RowConstraints();
         row0.setValignment(VPos.TOP);
@@ -238,7 +240,7 @@ public class AccommodationView {
         gridPane.add(createTitle(), 0, 0, 1, 1);
 
         // Ligne 1
-        gridPane.add(createTable(), 0, 1, 1, 1);
+        gridPane.add(createTable(accommodations), 0, 1, 1, 1);
 
         // Ligne 2
         gridPane.add(createAddButton(), 0, 2, 1, 1);

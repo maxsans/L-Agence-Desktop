@@ -3,16 +3,15 @@ package com.eseo.lagence.lagence;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 
-import java.util.Arrays;
 import java.util.function.BiConsumer;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -24,6 +23,7 @@ public class MailBoxView {
     private BiConsumer<Button, Integer> buttonClickHandler;
 
     private Button acceptButton;
+    private final Button viewButton = new Button("view"); //make the button unique for the button event listener;
     private Button declineButton;
 
     public Button getAcceptButton() {
@@ -34,6 +34,9 @@ public class MailBoxView {
         return declineButton;
     }
 
+    public Button getViewButton() {
+        return viewButton;
+    }
 
     public MailBoxView(BiConsumer<Button, Integer> buttonClickHandler){
         this.buttonClickHandler = buttonClickHandler;
@@ -114,12 +117,12 @@ public class MailBoxView {
 
 
     private VBox createTitle() {
-        Label titleLabel = new Label("Liste des biens : ");
+        Label titleLabel = new Label("Demandes de logement : ");
         titleLabel.setFont(Font.font("Consolas", 36));
 
         VBox titleBox = new VBox(titleLabel);
         titleLabel.setAlignment(Pos.CENTER);
-
+        titleLabel.setPadding(new Insets(20,0,0,0));
         return titleBox;
     }
 
@@ -138,7 +141,7 @@ public class MailBoxView {
 
         colFirstName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUser().getFirstName()));
         colName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUser().getLastName()));
-        colAccommodation.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAccommodation().getLocation()));
+        colAccommodation.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAccommodation().getAddress()));
         colAccept.setCellFactory(param -> createAcceptCell());
         colDecline.setCellFactory(param -> createDeclineCell());
 
@@ -176,7 +179,7 @@ public class MailBoxView {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && !row.isEmpty() && event.getButton() == MouseButton.PRIMARY) {
                     Integer index = row.getItem().getId();
-                    // buttonClickHandler.accept(modifyButton, index);
+                    buttonClickHandler.accept(viewButton, index);
                 }
             });
             return row;
