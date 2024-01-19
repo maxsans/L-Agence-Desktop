@@ -19,9 +19,6 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
 public class MailBoxView {
 
-
-    private BiConsumer<Button, Integer> buttonClickHandler;
-
     private Button acceptButton;
     private final Button viewButton = new Button("view"); //make the button unique for the button event listener;
     private Button declineButton;
@@ -38,9 +35,7 @@ public class MailBoxView {
         return viewButton;
     }
 
-    public MailBoxView(BiConsumer<Button, Integer> buttonClickHandler){
-        this.buttonClickHandler = buttonClickHandler;
-    }
+    public MailBoxView(){}
     private Button createButton(FontAwesomeIcon icon, String color) {
         FontAwesomeIconView iconView = new FontAwesomeIconView(icon);
         iconView.setSize("1.5em");
@@ -68,17 +63,22 @@ public class MailBoxView {
     private TableCell createDeclineCell(){
         declineButton = createButton(FontAwesomeIcon.CLOSE, "#1c1c1e");
 
-        return new TableCell<Request, Request>() {
+        return new TableCell<RequestAccommodation, RequestAccommodation>() {
             private final Button declineBtn = createButton(FontAwesomeIcon.CLOSE, "#1c1c1e");
 
             {
                 declineBtn.setOnAction(event -> {
-                    Request accommodation = getTableView().getItems().get(getIndex());
-                    buttonClickHandler.accept(declineButton, accommodation.getId());
+                    RequestAccommodation accommodation = getTableView().getItems().get(getIndex());
+                    if (StageManager.getInstance().showAlert("Êtes-vous sûr de supprimer la demande?")) {
+                        System.out.println("OK");
+                        StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);
+                    } else {
+                        System.out.println("Cancel");
+                    }
                 });
             }
             @Override
-            protected void updateItem(Request item, boolean empty) {
+            protected void updateItem(RequestAccommodation item, boolean empty) {
                 super.updateItem(item, empty);
                 if (!empty) {
                     declineBtn.setUserData(item);
@@ -93,17 +93,22 @@ public class MailBoxView {
     private TableCell createAcceptCell(){
         acceptButton = createButton(FontAwesomeIcon.CHECK, "#ffa920");
 
-        return new TableCell<Request, Request>() {
+        return new TableCell<RequestAccommodation, RequestAccommodation>() {
             private final Button acceptBtn = createButton(FontAwesomeIcon.CHECK, "#ffa920");
 
             {
                 acceptBtn.setOnAction(event -> {
-                    Request accommodation = getTableView().getItems().get(getIndex());
-                    buttonClickHandler.accept(acceptButton, accommodation.getId());
+                    RequestAccommodation accommodation = getTableView().getItems().get(getIndex());
+                    if (StageManager.getInstance().showAlert("Êtes-vous sûr d'accepter la demande?")) {
+                        System.out.println("OK");
+                        StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);
+                    } else {
+                        System.out.println("Cancel");
+                    }
                 });
             }
             @Override
-            protected void updateItem(Request item, boolean empty) {
+            protected void updateItem(RequestAccommodation item, boolean empty) {
                 super.updateItem(item, empty);
                 if (!empty) {
                     acceptBtn.setUserData(item);
@@ -128,16 +133,16 @@ public class MailBoxView {
 
 
     private VBox createTable() {
-        TableView<Request> tableRequests = new TableView<>();
+        TableView<RequestAccommodation> tableRequests = new TableView<>();
         tableRequests.setMinWidth(1402);
         tableRequests.setMaxWidth(1402);
 
         // Create columns
-        TableColumn<Request, String> colFirstName = new TableColumn<>("Prenom");
-        TableColumn<Request, String> colName = new TableColumn<>("Nom");
-        TableColumn<Request, String> colAccommodation = new TableColumn<>("Logement");
-        TableColumn<Request, Request> colAccept = new TableColumn<>("");
-        TableColumn<Request, Request> colDecline = new TableColumn<>("");
+        TableColumn<RequestAccommodation, String> colFirstName = new TableColumn<>("Prenom");
+        TableColumn<RequestAccommodation, String> colName = new TableColumn<>("Nom");
+        TableColumn<RequestAccommodation, String> colAccommodation = new TableColumn<>("Logement");
+        TableColumn<RequestAccommodation, RequestAccommodation> colAccept = new TableColumn<>("");
+        TableColumn<RequestAccommodation, RequestAccommodation> colDecline = new TableColumn<>("");
 
         colFirstName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUser().getFirstName()));
         colName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUser().getLastName()));
@@ -163,23 +168,23 @@ public class MailBoxView {
 
         tableRequests.getColumns().addAll(colFirstName, colName, colAccommodation, colAccept, colDecline);
 
-        ObservableList<Request> data = FXCollections.observableArrayList(
-                new Request(1, 1, "test@gmail.com", "test", "T", 1, "e", 1.01, "t", "r", 2, 22),
-                new Request(2, 1, "test@gmail.com", "test", "T", 1, "e", 1.01, "t", "r", 2, 22),
-                new Request(3, 1, "test@gmail.com", "test", "T", 1, "e", 1.01, "t", "r", 2, 22),
-                new Request(4, 1, "test@gmail.com", "test", "T", 1, "e", 1.01, "t", "r", 2, 22),
-                new Request(5, 1, "test@gmail.com", "test", "T", 1, "e", 1.01, "t", "r", 2, 22),
-                new Request(6, 1, "test@gmail.com", "test", "T", 1, "e", 1.01, "t", "r", 2, 22)
+        ObservableList<RequestAccommodation> data = FXCollections.observableArrayList(
+                new RequestAccommodation("1", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, "t", "r", 2, 22),
+                new RequestAccommodation("2", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, "t", "r", 2, 22),
+                new RequestAccommodation("3", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, "t", "r", 2, 22),
+                new RequestAccommodation("4", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, "t", "r", 2, 22),
+                new RequestAccommodation("5", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, "t", "r", 2, 22),
+                new RequestAccommodation("6", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, "t", "r", 2, 22)
                 );
 
         tableRequests.setItems(data);
 
         tableRequests.setRowFactory(tv -> {
-            TableRow<Request> row = new TableRow<>();
+            TableRow<RequestAccommodation> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && !row.isEmpty() && event.getButton() == MouseButton.PRIMARY) {
-                    Integer index = row.getItem().getId();
-                    buttonClickHandler.accept(viewButton, index);
+                    String index = row.getItem().getId();
+                    StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);
                 }
             });
             return row;

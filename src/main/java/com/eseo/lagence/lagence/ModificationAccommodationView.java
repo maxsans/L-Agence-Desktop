@@ -7,7 +7,6 @@ import javafx.scene.layout.VBox;
 import java.util.function.Consumer;
 
 public class ModificationAccommodationView {
-    private Consumer<Button> buttonClickHandler;
     private TextField nameField;
     private TextField priceField;
     private TextField locationField;
@@ -17,13 +16,13 @@ public class ModificationAccommodationView {
         return buttonSave;
     }
 
-    public ModificationAccommodationView(Consumer<Button> buttonClickHandler){
-        this.buttonClickHandler = buttonClickHandler;
+    public ModificationAccommodationView(){
     }
 
-    public VBox createBox (Accommodation accommodation) {
+    public VBox createBox () {
+        Accommodation accommodation = new Accommodation("1", "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36);
 
-        // Créer un champ de texte pour le nom
+                // Créer un champ de texte pour le nom
         nameField = new TextField();
         nameField.setText(accommodation.getName());
         nameField.setPromptText("Nom");
@@ -45,7 +44,7 @@ public class ModificationAccommodationView {
             accommodation.setName(nameField.getText());
             accommodation.setPrice(Double.valueOf(priceField.getText()));
             accommodation.setAddress(locationField.getText());
-            buttonClickHandler.accept(buttonSave);
+            StageManager.getInstance().setView(StageManager.SceneView.ACCOMMODATION_SCENE);
         });
 
         VBox vbox = new VBox(nameField,priceField,locationField,buttonSave);

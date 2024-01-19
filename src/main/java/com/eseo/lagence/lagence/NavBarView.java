@@ -23,15 +23,13 @@ import java.util.function.Consumer;
 public class NavBarView {
 
     private VBox navBar;
-    private Consumer<Button> buttonClickHandler;
     private Button listAccommodationsButton;
     private Button bedButton;
     private Button mailboxButton;
     private Button usersButton;
     private Button disconnectButton;
 
-    public NavBarView(Consumer<Button> buttonClickHandler){
-        this.buttonClickHandler = buttonClickHandler;
+    public NavBarView(){
     }
 
     public VBox getNavBar() {
@@ -180,12 +178,12 @@ public class NavBarView {
             disconnectButton.setScaleX(1.0);
             disconnectButton.setScaleY(1.0);
         });
+        listAccommodationsButton.setOnAction(event -> {StageManager.getInstance().setView(StageManager.SceneView.ACCOMMODATION_SCENE);});
+        bedButton.setOnAction(event -> {StageManager.getInstance().setView(StageManager.SceneView.TENANT_SCENE);});
+        mailboxButton.setOnAction(event -> {StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);});
+        usersButton.setOnAction(event -> {StageManager.getInstance().setView(StageManager.SceneView.USERS_SCENE);});
+        disconnectButton.setOnAction(event -> {StageManager.getInstance().setView(StageManager.SceneView.ACCOMMODATION_SCENE);});
 
-        setButtonClickHandler(listAccommodationsButton, buttonClickHandler);
-        setButtonClickHandler(bedButton, buttonClickHandler);
-        setButtonClickHandler(mailboxButton, buttonClickHandler);
-        setButtonClickHandler(usersButton, buttonClickHandler);
-        setButtonClickHandler(disconnectButton, buttonClickHandler);
 
 
         // Column 0
@@ -221,13 +219,6 @@ public class NavBarView {
         this.navBar = navBarBox;
 
         return navBarBox;
-    }
-
-
-    private void setButtonClickHandler(Button button, Consumer<Button> buttonClickHandler) {
-        button.setOnAction(event -> {
-            buttonClickHandler.accept(button);
-        });
     }
 
 }

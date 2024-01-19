@@ -3,7 +3,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Accommodation {
 
-    private Integer id;
+    private String id;
     private String name;
     private Double price;
     private String description;
@@ -15,7 +15,7 @@ public class Accommodation {
 
 
 
-    public Accommodation(Integer id, String name, Double price, String description, //
+    public Accommodation(String id, String name, Double price, String description, //
                          String address, Integer roomsCount, Integer surface) {
         this.id = id;
         this.name = name;
@@ -40,7 +40,7 @@ public class Accommodation {
         }
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
@@ -93,7 +93,7 @@ public class Accommodation {
     }
 
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

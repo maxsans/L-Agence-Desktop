@@ -4,14 +4,14 @@ import java.util.List;
 
 public class UserAccount {
 
-    private int id;
+    private String id;
     private String email;
     private String firstName;
     private String lastName;
 
 
 
-    public UserAccount(int id, String email, //
+    public UserAccount(String id, String email, //
                        String firstName, String lastName) {
         this.id = id;
         this.email = email;
@@ -19,11 +19,11 @@ public class UserAccount {
         this.lastName = lastName;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

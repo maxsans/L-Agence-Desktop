@@ -20,9 +20,6 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
 public class AccommodationView {
-
-    private BiConsumer<Button, Integer> buttonClickHandler;
-
     private Button addButton;
     private Button modifyButton = new Button("modify"); //make the button unique for the button event listener
     private Button deleteButton;
@@ -38,8 +35,7 @@ public class AccommodationView {
     }
 
 
-    public AccommodationView(BiConsumer<Button, Integer> buttonClickHandler){
-        this.buttonClickHandler = buttonClickHandler;
+    public AccommodationView(){
     }
     private Button createDeleteButton() {
         FontAwesomeIconView iconView = new FontAwesomeIconView(FontAwesomeIcon.TRASH);
@@ -72,7 +68,15 @@ public class AccommodationView {
             {
                 delButton.setOnAction(event -> {
                     Accommodation accommodation = getTableView().getItems().get(getIndex());
-                    buttonClickHandler.accept(deleteButton, accommodation.getId());
+                    if (StageManager.getInstance().showAlert("Êtes-vous sûr de supprimer cet élément?")) {
+                        System.out.println("OK");
+                        String endpoint = "/property/" + accommodation.getId();
+                        System.out.println(endpoint);
+                        RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.DELETE);
+                        StageManager.getInstance().setView(StageManager.SceneView.ACCOMMODATION_SCENE);
+                    } else {
+                        System.out.println("Cancel");
+                    }
                 });
             }
             @Override
@@ -122,7 +126,7 @@ public class AccommodationView {
 
         this.addButton = new Button();
         addButton.setGraphic(addButtonLabel);
-        addButton.setOnAction(event -> {buttonClickHandler.accept(addButton, 1);});
+        addButton.setOnAction(event -> {StageManager.getInstance().setView(StageManager.SceneView.MODIFY_ACCOMMODATION_SCENE);});
 
 
         // Create a VBox to contain the button
@@ -140,13 +144,11 @@ public class AccommodationView {
         tableAccommodation.setMaxWidth(1402);
 
         // Create columns
-        TableColumn<Accommodation, Integer> colId = new TableColumn<>("ID");
         TableColumn<Accommodation, String> colName = new TableColumn<>("Nom");
         TableColumn<Accommodation, Double> colPrice = new TableColumn<>("Prix");
         TableColumn<Accommodation, String> colLocation = new TableColumn<>("Localisation");
         TableColumn<Accommodation, Accommodation> colDelete = new TableColumn<>("");
 
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         colLocation.setCellValueFactory(new PropertyValueFactory<>("address"));
@@ -154,11 +156,9 @@ public class AccommodationView {
 
         colPrice.setCellFactory(tc -> createPriceCell());
 
-        colId.setMinWidth(60.00);
-        colId.setMaxWidth(60.00);
-        colId.setStyle("-fx-alignment: CENTER;");
-        colName.setMinWidth(530.00);
-        colName.setMaxWidth(530.00);
+
+        colName.setMinWidth(590.00);
+        colName.setMaxWidth(590.00);
         colName.setStyle("-fx-alignment: CENTER;");
         colPrice.setMinWidth(100.00);
         colPrice.setMaxWidth(100.00);
@@ -170,7 +170,7 @@ public class AccommodationView {
         colDelete.setMinWidth(40.00);
         colDelete.setMaxWidth(40.00);
 
-        tableAccommodation.getColumns().addAll(colId, colName, colPrice, colLocation, colDelete);
+        tableAccommodation.getColumns().addAll(colName, colPrice, colLocation, colDelete);
 
         /*ObservableList<Accommodation> data = FXCollections.observableArrayList(
                 new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36),
@@ -199,8 +199,8 @@ public class AccommodationView {
             TableRow<Accommodation> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && !row.isEmpty() && event.getButton() == MouseButton.PRIMARY) {
-                    Integer index = row.getItem().getId();
-                    buttonClickHandler.accept(modifyButton, index);
+                    String index = row.getItem().getId();
+                    StageManager.getInstance().setView(StageManager.SceneView.MODIFY_ACCOMMODATION_SCENE);
                 }
             });
             return row;
@@ -213,12 +213,12 @@ public class AccommodationView {
         return tabBox;
     }
 
-    public VBox createBox(RequestService requestService){
+    public VBox createBox(){
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);
         gridPane.setVgap(10);
-        ObservableList<Accommodation> accommodations = requestService.getAccommodations();
+        ObservableList<Accommodation> accommodations = RequestService.getInstance().getAccommodations();
         // Ligne 0
         RowConstraints row0 = new RowConstraints();
         row0.setValignment(VPos.TOP);
