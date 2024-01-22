@@ -19,7 +19,8 @@ public class ModificationAccommodationView {
     public ModificationAccommodationView(){
     }
 
-    public VBox createBox () {
+    public VBox createBox (Accommodation accommo) {
+
         Accommodation accommodation = new Accommodation("1", "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36);
 
                 // Créer un champ de texte pour le nom
@@ -40,7 +41,6 @@ public class ModificationAccommodationView {
         // Créer un bouton pour valider les modifications
         buttonSave = new Button("Valider");
         buttonSave.setOnAction(event -> {
-            // Mise à jour des données de l'hébergement
             accommodation.setName(nameField.getText());
             accommodation.setPrice(Double.valueOf(priceField.getText()));
             accommodation.setAddress(locationField.getText());

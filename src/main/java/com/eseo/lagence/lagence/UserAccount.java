@@ -6,15 +6,25 @@ public class UserAccount {
 
     private String id;
     private String email;
+    private String role;
+
     private String firstName;
     private String lastName;
 
-
-
-    public UserAccount(String id, String email, //
+    public UserAccount(String id, String email,
                        String firstName, String lastName) {
         this.id = id;
         this.email = email;
+        this.role = "user";
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public UserAccount(String id, String email, String role,
+                       String firstName, String lastName) {
+        this.id = id;
+        this.email = email;
+        this.role = role;
         this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -34,6 +44,14 @@ public class UserAccount {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getFirstName() {

@@ -72,10 +72,19 @@ public class UsersView {
                 super.updateItem(item, empty);
                 if (!empty) {
                     delButton.setUserData(item);
+                    UserAccount user = getTableView().getItems().get(getIndex());
+                    UserAccount userLogged = RequestService.getInstance().getUserLogged();
+                    if (userLogged != null && userLogged.getId().equals(user.getId())) {
+                        delButton.setDisable(true);
+                    } else {
+                        delButton.setDisable(false);
+                    }
+
                     setGraphic(delButton);
                 } else {
                     setGraphic(null);
                 }
+
             }
         };
     }
@@ -93,20 +102,22 @@ public class UsersView {
 
 
     private VBox createTable(ObservableList<UserAccount> users) {
-        TableView<UserAccount> tableRequests = new TableView<>();
-        tableRequests.setMinWidth(1402);
-        tableRequests.setMaxWidth(1402);
+        TableView<UserAccount> tableUsers = new TableView<>();
+        tableUsers.setMinWidth(1402);
+        tableUsers.setMaxWidth(1402);
 
         // Create columns
         TableColumn<UserAccount, String> colFirstName = new TableColumn<>("Prenom");
         TableColumn<UserAccount, String> colName = new TableColumn<>("Nom");
         TableColumn<UserAccount, String> colMail = new TableColumn<>("Email");
+        TableColumn<UserAccount, String> colRole = new TableColumn<>("Role");
         TableColumn<UserAccount, UserAccount> colDelete = new TableColumn<>("");
 
 
         colFirstName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFirstName()));
         colName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLastName()));
         colMail.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
+        colRole.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRole()));
         colDelete.setCellFactory(param -> createDeleteCell());
 
 
@@ -116,18 +127,23 @@ public class UsersView {
         colName.setMinWidth(400.00);
         colName.setMaxWidth(400.00);
         colName.setStyle("-fx-alignment: CENTER;");
-        colMail.setMinWidth(545.00);
-        colMail.setMaxWidth(545.00);
+        colMail.setMinWidth(450.00);
+        colMail.setMaxWidth(450.00);
         colMail.setStyle("-fx-alignment: CENTER;");
+        colRole.setMinWidth(95.00);
+        colRole.setMaxWidth(95.00);
+        colRole.setStyle("-fx-alignment: CENTER;");
         colDelete.setStyle("-fx-alignment: CENTER;");
         colDelete.setMinWidth(40.00);
         colDelete.setMaxWidth(40.00);
 
-        tableRequests.getColumns().addAll(colFirstName, colName, colMail, colDelete);
+        tableUsers.getColumns().addAll(colFirstName, colName, colMail, colRole, colDelete);
+
+
 
         ObservableList<UserAccount> data = users;
 
-        tableRequests.setItems(data);
+        tableUsers.setItems(data);
 
         /*tableRequests.setRowFactory(tv -> {
             TableRow<Request> row = new TableRow<>();
@@ -139,10 +155,10 @@ public class UsersView {
             });
             return row;
         });*/
-        tableRequests.setPrefHeight(tableRequests.getItems().size() * 35 + 30);
-        tableRequests.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        tableRequests.setStyle("-fx-background-color: #fff5e0;");
-        VBox tabBox = new VBox(tableRequests);
+        tableUsers.setPrefHeight(tableUsers.getItems().size() * 35 + 30);
+        tableUsers.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableUsers.setStyle("-fx-background-color: #fff5e0;");
+        VBox tabBox = new VBox(tableUsers);
         tabBox.setAlignment(Pos.CENTER);
         return tabBox;
     }
@@ -153,7 +169,7 @@ public class UsersView {
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         ObservableList<UserAccount> users = RequestService.getInstance().getUsers();
-
+        UserAccount userLogged = RequestService.getInstance().getUserLogged();
         // Ligne 0
         RowConstraints row0 = new RowConstraints();
         row0.setValignment(VPos.TOP);
