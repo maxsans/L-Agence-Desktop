@@ -48,8 +48,8 @@ public class RequestService {
         return userLogged;
     }
 
-    public boolean login(String loginEndpoint, String username, String password) {
-        String endpoint = baseUrl + loginEndpoint;
+    public boolean login(String username, String password) {
+        String endpoint = baseUrl + "/auth/login";
 
         HttpClient client = HttpClient.newHttpClient();
 
@@ -69,7 +69,7 @@ public class RequestService {
             JsonNode rootNode = objectMapper.readTree(loginResponse.body());
             JsonNode userNode = rootNode.get("user");
 
-            if (userNode != null) {
+            if (userNode != null && userNode.get("role").asText().equals("admin")) {
                 String id = userNode.get("id").asText();
                 String email = userNode.get("email").asText();
                 String role = userNode.get("role").asText();
@@ -96,21 +96,22 @@ public class RequestService {
         }
     }
 
-    public void logout(String logoutEndpoint) {
-        String endpoint = baseUrl + logoutEndpoint;
+    public void logout() {
+        String endpoint = baseUrl + "/auth/logout";
 
         HttpClient client = HttpClient.newHttpClient();
 
         // Create a login request
-        HttpRequest loginRequest = HttpRequest.newBuilder()
+        HttpRequest logoutRequest = HttpRequest.newBuilder()
                 .uri(URI.create(endpoint))
                 .header("Cookie", this.cookieString)
                 .POST(HttpRequest.BodyPublishers.ofString(""))
                 .build();
 
         try {
+            System.out.println("try logout");
             // Send the login request
-            HttpResponse<String> logoutResponse = client.send(loginRequest, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> logoutResponse = client.send(logoutRequest, HttpResponse.BodyHandlers.ofString());
             this.userLogged = null;
             this.cookieString = null;
             return;

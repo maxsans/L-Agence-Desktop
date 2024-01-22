@@ -7,10 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="L-Agence-Desktop" />
+        <module name="lagence" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="L-Agence-Desktop" target="19" />
-    </bytecodeTargetLevel>
   </component>
 </project>

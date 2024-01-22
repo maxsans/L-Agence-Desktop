@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -13,6 +14,8 @@ public class StageManager {
     private Stage modalStage;
     private Stage stage;
     private static StageManager instance;
+
+    private LoginView loginView;
 
     private NavBarView navBarView;
 
@@ -35,6 +38,7 @@ public class StageManager {
         modalStage.initModality(Modality.APPLICATION_MODAL);
         modalStage.setTitle("");
 
+        this.loginView = new LoginView();
         this.navBarView = new NavBarView();
         this.accommodationView = new AccommodationView();
         this.mailBoxView = new MailBoxView();
@@ -74,6 +78,7 @@ public class StageManager {
     }
 
     public enum SceneView{
+        LOGIN_SCENE,
         ACCOMMODATION_SCENE,
         MODIFY_ACCOMMODATION_SCENE,
         REQUEST_DETAIL_SCENE,
@@ -99,6 +104,9 @@ public class StageManager {
 
         VBox vBox = null;
         switch (sceneView){
+            case LOGIN_SCENE -> {
+                vBox = new VBox(loginView.create());
+            }
             case ACCOMMODATION_SCENE -> {
                 vBox = new VBox(navBarView.createNavBar(), accommodationView.createBox());
             }
