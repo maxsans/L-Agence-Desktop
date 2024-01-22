@@ -123,7 +123,7 @@ public class RequestService {
 
     public ObservableList<Accommodation> getAccommodations() {
 
-        JsonNode rootNode = sendHttpRequest("/property", HttpMethod.GET);
+        JsonNode rootNode = sendHttpRequest("/properties", HttpMethod.GET);
 
             JsonNode propertiesNode = rootNode.get("properties");
 
