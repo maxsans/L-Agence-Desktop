@@ -196,11 +196,6 @@ public class UsersView {
         return vBox;
     }
 
-    private void setButtonClickHandler(Button button, Integer id, BiConsumer<Button, Integer> buttonClickHandler) {
-        button.setOnAction(event -> {
-            buttonClickHandler.accept(button, id);
-        });
-    }
 
 
 }

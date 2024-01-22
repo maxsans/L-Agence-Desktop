@@ -35,6 +35,7 @@ public class ModalTenant {
         modalStage.show();
     }
 
+
     private VBox createRoot(Rental selectedRental) {
         VBox root = new VBox(10);
 
@@ -44,7 +45,7 @@ public class ModalTenant {
                 createAccommodationBox(selectedRental)
         );
 
-        HBox buttonBox = createButtonBox();
+        HBox buttonBox = createButtonBox(selectedRental);
 
         root.getChildren().addAll(tenantAndAccommodationBox, buttonBox);
 
@@ -81,10 +82,10 @@ public class ModalTenant {
 
         Label titleLabel = createLabel("Logement", 30);
         HBox nameBox = createTextWithLabel("Nom : ", accommodation.getName());
-        HBox locationBox = createTextWithLabel("Localisation : ", accommodation.getLocation());
+        HBox locationBox = createTextWithLabel("Localisation : ", accommodation.getAddress());
         HBox priceBox = createTextWithLabel("Prix : ", accommodation.getPrice() + "€");
-        HBox roomsBox = createTextWithLabel("Nombre de pièces : ", String.valueOf(accommodation.getNumberOfRooms()));
-        HBox sizeBox = createTextWithLabel("Taille : ", accommodation.getSize() + "m²");
+        HBox roomsBox = createTextWithLabel("Nombre de pièces : ", String.valueOf(accommodation.getRoomsCount()));
+        HBox sizeBox = createTextWithLabel("Taille : ", accommodation.getSurface() + "m²");
 
         titleLabel.setAlignment(Pos.CENTER);
         nameBox.setAlignment(Pos.CENTER);
@@ -98,18 +99,28 @@ public class ModalTenant {
         return boxAccommodation;
     }
 
-    private HBox createButtonBox() {
+    private HBox createButtonBox(Rental selectedRental) {
         HBox boxButton = new HBox();
         boxButton.setPrefSize(1000, 50);
         boxButton.setStyle("-fx-alignment: TOP_CENTER;");
 
-        FontAwesomeIconView trashIcon = new FontAwesomeIconView(FontAwesomeIcon.TRASH);
-        trashIcon.setSize("18");
+        Button button = new Button("Supprimer le contrat");
 
-        Label deleteRental = new Label("Supprimer le contrat");
-        deleteRental.setFont(Font.font("Consolas", 20));
+        button.setOnAction(event -> {
+            if (StageManager.getInstance().showAlert("Êtes-vous sûr de supprimer ce contrat?")) {
+                System.out.println("OK");
+                String endpoint = "/user/rental/admin" + selectedRental.getId() +"/" + selectedRental.getAccommodation().getId();
+                RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.DELETE);
+                modalStage.close();
+                StageManager.getInstance().setView(StageManager.SceneView.TENANT_SCENE);
+            } else {
+                System.out.println("Cancel");
+            }
+        });
 
-        boxButton.getChildren().addAll(trashIcon,deleteRental);
+
+        boxButton.getChildren().addAll(button);
+
 
         return boxButton;
     }

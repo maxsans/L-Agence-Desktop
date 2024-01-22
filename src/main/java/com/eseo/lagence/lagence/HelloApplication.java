@@ -18,6 +18,7 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         RequestService requestService = RequestService.getInstance();
+        RequestService.getInstance();
         StageManager stageManager = StageManager.getInstance();
         stageManager.initStage(stage, StageManager.SceneView.LOGIN_SCENE);
     }
