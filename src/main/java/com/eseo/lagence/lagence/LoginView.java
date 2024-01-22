@@ -1,8 +1,5 @@
 package com.eseo.lagence.lagence;
 
-import com.eseo.lagence.lagence.services.AuthService;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;

@@ -14,6 +14,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+import java.util.Optional;
+
 
 public class RequestDetailView {
 
@@ -75,6 +77,7 @@ public class RequestDetailView {
                 System.out.println("OK");
                 StageManager.getInstance().deleteModalScene();
                 String endpoint = "/properties/apply/" + requestAccommodation.getId()+"/"+"refused";
+                RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.POST,Optional.empty());
                 StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);
             } else {
                 System.out.println("Cancel");
@@ -89,6 +92,7 @@ public class RequestDetailView {
                 System.out.println("OK");
                 StageManager.getInstance().deleteModalScene();
                 String endpoint = "/properties/apply/" + requestAccommodation.getId()+"/"+"accepted";
+                RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.POST, Optional.empty());
                 StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);
             } else {
                 System.out.println("Cancel");
