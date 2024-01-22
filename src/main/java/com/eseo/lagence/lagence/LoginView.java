@@ -45,7 +45,7 @@ public class LoginView {
         password.setPrefHeight(30);
         grid.add(password, 1, 2);
 
-        Text errorMsg = new Text("L'identifiant ou le mot de passe est incorrect.");
+        Text errorMsg = new Text();
         errorMsg.setFill(Color.RED);
         errorMsg.setTranslateY(-10);
         errorMsg.setVisible(false);
@@ -71,11 +71,12 @@ public class LoginView {
                 return;
             }
 
-            boolean credentialsValid = RequestService.getInstance().login("/auth/login", email.getText(), password.getText());
+            boolean credentialsValid = RequestService.getInstance().login( email.getText(), password.getText());
             if(credentialsValid){
                 StageManager.getInstance().setView(StageManager.SceneView.ACCOMMODATION_SCENE);
 
             } else {
+                errorMsg.setText("L'identifiant ou le mot de passe est incorrect.");
                 errorMsg.setVisible(true);
             }
         });
