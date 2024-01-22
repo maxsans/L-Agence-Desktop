@@ -205,7 +205,7 @@ public class RequestService {
 
     public ObservableList<Rental> getTenants() {
 
-        JsonNode rootNode = sendHttpRequest("/user/rental", HttpMethod.GET);
+        JsonNode rootNode = sendHttpRequest("/user/rental", HttpMethod.GET,Optional.empty() );
 
 
         if (rootNode != null && rootNode.isArray()) {
@@ -219,16 +219,18 @@ public class RequestService {
                 String accomodationId = propertyNode.get("id").asText();
                 String name = propertyNode.get("name").asText();
                 Double price = propertyNode.get("price").asDouble();
+                Integer chargesPrice = propertyNode.get("chargesPrice").asInt();
                 String description = propertyNode.get("description").asText();
                 String address = propertyNode.get("address").asText();
                 Integer roomsCount = propertyNode.get("roomsCount").asInt();
                 Integer surface = propertyNode.get("surface").asInt();
+                String type = propertyNode.get("type").asText();
 
                 String email = userNode.get("email").asText();
                 String role = userNode.get("role").asText();
                 String firstName = userNode.get("firstName").asText();
                 String lastName = userNode.get("lastName").asText();
-                Rental rental = new Rental(id,new Accommodation(accomodationId, name, price, description, address, roomsCount, surface), new UserAccount(id, email, firstName, lastName));
+                Rental rental = new Rental(id,new Accommodation(accomodationId, name, price, chargesPrice, description, address, roomsCount, surface, type), new UserAccount(id, email, firstName, lastName));
                 rentals.add(rental);
             }
             return FXCollections.observableArrayList(rentals);
@@ -298,9 +300,9 @@ public class RequestService {
         }
     }
 
-    public ObservableList<UserAccount> getApply() {
+    public ObservableList<RequestAccommodation> getApply() {
 
-        JsonNode rootNode = sendHttpRequest("/properties/apply", HttpMethod.GET, Optional.empty());
+        JsonNode rootNode = sendHttpRequest("/properties/apply", HttpMethod.POST, Optional.empty());
         System.out.println(rootNode);
         List<RequestAccommodation> requestsAccommodation = new ArrayList<>();
 
@@ -322,6 +324,9 @@ public class RequestService {
                 String address = propertyNode.get("address").asText();
                 Integer roomsCount = propertyNode.get("roomsCount").asInt();
                 Integer surface = propertyNode.get("surface").asInt();
+                Integer chargesPrice = propertyNode.get("chargesPrice").asInt();
+                String type = propertyNode.get("type").asText();
+
 
                 String userId = userNode.get("id").asText();
                 String email = userNode.get("email").asText();
@@ -329,7 +334,7 @@ public class RequestService {
                 String firstName = userNode.get("firstName").asText();
                 String lastName = userNode.get("lastName").asText();
 
-                Accommodation accommodation = new Accommodation(accomodationId, name, price, description, address, roomsCount, surface);
+                Accommodation accommodation = new Accommodation(id, name, price, chargesPrice, description, address, roomsCount, surface, type);
                 UserAccount userAccount = new UserAccount(userId, email, role, firstName, lastName);
                 System.out.println(state);
 

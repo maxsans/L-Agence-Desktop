@@ -15,6 +15,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.util.Optional;
+
 
 public class ModalTenant {
     private Stage modalStage;
@@ -109,8 +111,8 @@ public class ModalTenant {
         button.setOnAction(event -> {
             if (StageManager.getInstance().showAlert("Êtes-vous sûr de supprimer ce contrat?")) {
                 System.out.println("OK");
-                String endpoint = "/user/rental/admin" + selectedRental.getId() +"/" + selectedRental.getAccommodation().getId();
-                RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.DELETE);
+                String endpoint = "/user/rental/" + selectedRental.getId() +"/" + selectedRental.getAccommodation().getId();
+                RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.DELETE, Optional.empty());
                 modalStage.close();
                 StageManager.getInstance().setView(StageManager.SceneView.TENANT_SCENE);
             } else {

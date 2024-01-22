@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 
+import java.util.Optional;
 import java.util.function.BiConsumer;
 
 public class MailBoxView {
@@ -75,7 +76,7 @@ public class MailBoxView {
                     if (StageManager.getInstance().showAlert("Êtes-vous sûr de supprimer la demande?")) {
                         System.out.println("OK");
                         String endpoint = "/properties/apply/" + requestAccommodation.getId()+"/"+"refused";
-                        RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.POST);
+                        RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.POST, Optional.empty());
                         StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);
                     } else {
                         System.out.println("Cancel");
@@ -108,7 +109,7 @@ public class MailBoxView {
                     if (StageManager.getInstance().showAlert("Êtes-vous sûr d'accepter la demande?")) {
                         System.out.println("OK");
                         String endpoint = "/properties/apply/" + requestAccommodation.getId()+"/"+"accepted";
-                        RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.POST);
+                        RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.POST,Optional.empty());
                         StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);
                     } else {
                         System.out.println("Cancel");
