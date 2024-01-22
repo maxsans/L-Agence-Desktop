@@ -74,6 +74,7 @@ public class RequestDetailView {
             if (StageManager.getInstance().showAlert("Êtes-vous sûr d'accepter la demande?")) {
                 System.out.println("OK");
                 StageManager.getInstance().deleteModalScene();
+                String endpoint = "/properties/apply/" + requestAccommodation.getId()+"/"+"refused";
                 StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);
             } else {
                 System.out.println("Cancel");
@@ -87,6 +88,7 @@ public class RequestDetailView {
             if (StageManager.getInstance().showAlert("Êtes-vous sûr d'accepter la demande?")) {
                 System.out.println("OK");
                 StageManager.getInstance().deleteModalScene();
+                String endpoint = "/properties/apply/" + requestAccommodation.getId()+"/"+"accepted";
                 StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);
             } else {
                 System.out.println("Cancel");

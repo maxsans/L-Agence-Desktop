@@ -184,6 +184,43 @@ public class RequestService {
             }
     }
 
+    public ObservableList<Rental> getTenants() {
+
+        JsonNode rootNode = sendHttpRequest("/user/rental", HttpMethod.GET);
+
+
+        if (rootNode != null && rootNode.isArray()) {
+            List<Rental> rentals = new ArrayList<>();
+
+            for (JsonNode userNode : rootNode) {
+                JsonNode propertyNode = userNode.get("rentedProperty");
+
+                String id = userNode.get("id").asText();
+
+                String accomodationId = propertyNode.get("id").asText();
+                String name = propertyNode.get("name").asText();
+                Double price = propertyNode.get("price").asDouble();
+                String description = propertyNode.get("description").asText();
+                String address = propertyNode.get("address").asText();
+                Integer roomsCount = propertyNode.get("roomsCount").asInt();
+                Integer surface = propertyNode.get("surface").asInt();
+
+                String email = userNode.get("email").asText();
+                String role = userNode.get("role").asText();
+                String firstName = userNode.get("firstName").asText();
+                String lastName = userNode.get("lastName").asText();
+                Rental rental = new Rental(id,new Accommodation(accomodationId, name, price, description, address, roomsCount, surface), new UserAccount(id, email, firstName, lastName));
+                rentals.add(rental);
+            }
+            return FXCollections.observableArrayList(rentals);
+        } else {
+            System.err.println("Unexpected JSON structure. Unable to deserialize accommodations.");
+            return FXCollections.observableArrayList();
+        }
+    }
+
+
+
     public ObservableList<UserAccount> getUsers() {
         JsonNode rootNode = sendHttpRequest("/user", HttpMethod.GET);
         System.out.println(rootNode);
@@ -241,8 +278,11 @@ public class RequestService {
 
                 Accommodation accommodation = new Accommodation(accomodationId, name, price, description, address, roomsCount, surface);
                 UserAccount userAccount = new UserAccount(userId, email, role, firstName, lastName);
+                System.out.println(state);
 
-                requestsAccommodation.add(new RequestAccommodation(id, motivationText, idCardPath, proofOfAddressPath, state, userAccount, accommodation));
+                if (state.equals("pending")){
+                    requestsAccommodation.add(new RequestAccommodation(id, motivationText, idCardPath, proofOfAddressPath, state, userAccount, accommodation));
+                }
             } else {
                 System.err.println("Unexpected JSON structure. Unable to deserialize apply.");
                 return FXCollections.observableArrayList();
