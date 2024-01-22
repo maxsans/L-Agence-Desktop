@@ -13,12 +13,12 @@ public class RequestAccommodation {
     }
 
     public RequestAccommodation(String id, String userId, String userEmail, String userFirstName, String userLastName,
-                                String accommodationId, String accommodationName, double accommodationPrice, String accommodationDescription, String accommodationLocation,
+                                String accommodationId, String accommodationName, double accommodationPrice, Integer chargesPrice, String accommodationDescription, String accommodationLocation,
                                 int accommodationRooms, int accommodationSize) {
         this.id = id;
         this.user = new UserAccount(userId, userEmail, userFirstName, userLastName);
-        this.accommodation = new Accommodation(accommodationId, accommodationName, accommodationPrice, accommodationDescription, accommodationLocation,
-                accommodationRooms, accommodationSize);
+        this.accommodation = new Accommodation(accommodationId, accommodationName, accommodationPrice, chargesPrice, accommodationDescription, accommodationLocation,
+                accommodationRooms, accommodationSize, "apartment");
     }
 
     public String getId() {
@@ -28,6 +28,7 @@ public class RequestAccommodation {
     public void setId(String id) {
         this.id = id;
     }
+
     public UserAccount getUser() {
         return user;
     }

@@ -1,4 +1,5 @@
 package com.eseo.lagence.lagence;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Accommodation {
@@ -13,10 +14,12 @@ public class Accommodation {
     private String type;
     private Integer chargesPrice;
 
+    public Accommodation() {
 
+    }
 
-    public Accommodation(String id, String name, Double price, String description, //
-                         String address, Integer roomsCount, Integer surface) {
+    public Accommodation(String id, String name, Double price, Integer chargesPrice, String description, //
+                         String address, Integer roomsCount, Integer surface, String type) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -24,10 +27,9 @@ public class Accommodation {
         this.address = address;
         this.roomsCount = roomsCount;
         this.surface = surface;
+        this.chargesPrice = chargesPrice;
+        this.type = type;
     }
-
-
-
 
 
     public static Accommodation fromJson(String json) {

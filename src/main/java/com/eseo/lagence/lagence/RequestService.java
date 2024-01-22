@@ -1,8 +1,9 @@
 package com.eseo.lagence.lagence;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -13,6 +14,7 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 public class RequestService {
@@ -25,14 +27,15 @@ public class RequestService {
 
     private String baseUrl = "http://localhost:3000/api";
 
-    public enum HttpMethod{
+    public enum HttpMethod {
         GET,
         POST,
+        PUT,
         DELETE
     }
 
     public static RequestService getInstance() {
-        if(RequestService.instance == null) {
+        if (RequestService.instance == null) {
             RequestService.instance = new RequestService();
         }
         return RequestService.instance;
@@ -70,8 +73,7 @@ public class RequestService {
                 String firstName = userNode.get("firstName").asText();
                 String lastName = userNode.get("lastName").asText();
                 this.userLogged = new UserAccount(id, email, role, firstName, lastName);
-            }
-            else {
+            } else {
                 System.err.println("Unexpected JSON structure. Unable to deserialize users.");
                 return false;
             }
@@ -114,14 +116,23 @@ public class RequestService {
         }
     }
 
-    public JsonNode sendHttpRequest(String endpoint, HttpMethod httpMethod) {
+    public JsonNode sendHttpRequest(String endpoint, HttpMethod httpMethod, Optional<String> requestBody) {
         HttpClient httpClient = HttpClient.newHttpClient();
         ObjectMapper objectMapper = new ObjectMapper();
         String fullEndpoint = baseUrl + endpoint;
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                 .uri(URI.create(fullEndpoint));
-        if (this.cookieString != null){
+
+        if (this.cookieString != null) {
             requestBuilder = requestBuilder.header("Cookie", this.cookieString);
+        }
+
+        HttpRequest.BodyPublisher body;
+        if (requestBody.isPresent()) {
+            body = HttpRequest.BodyPublishers.ofString(requestBody.get());
+            requestBuilder = requestBuilder.header("Content-Type", "application/json");
+        } else {
+            body = HttpRequest.BodyPublishers.noBody();
         }
 
         switch (httpMethod) {
@@ -129,7 +140,10 @@ public class RequestService {
                 requestBuilder = requestBuilder.GET();
                 break;
             case POST:
-                requestBuilder = requestBuilder.POST(HttpRequest.BodyPublishers.noBody());
+                requestBuilder = requestBuilder.POST(body);
+                break;
+            case PUT:
+                requestBuilder = requestBuilder.PUT(body);
                 break;
             case DELETE:
                 requestBuilder = requestBuilder.DELETE();
@@ -151,35 +165,37 @@ public class RequestService {
 
     public ObservableList<Accommodation> getAccommodations() {
 
-        JsonNode rootNode = sendHttpRequest("/properties", HttpMethod.GET);
+        JsonNode rootNode = sendHttpRequest("/properties", HttpMethod.GET, Optional.empty());
 
-            JsonNode propertiesNode = rootNode.get("properties");
+        JsonNode propertiesNode = rootNode.get("properties");
 
-            if (propertiesNode != null && propertiesNode.isArray()) {
-                List<Accommodation> accommodations = new ArrayList<>();
+        if (propertiesNode != null && propertiesNode.isArray()) {
+            List<Accommodation> accommodations = new ArrayList<>();
 
-                for (JsonNode accommodationNode : propertiesNode) {
-                    String id = accommodationNode.get("id").asText();
-                    String name = accommodationNode.get("name").asText();
-                    Double price = accommodationNode.get("price").asDouble();
-                    String description = accommodationNode.get("description").asText();
-                    String address = accommodationNode.get("address").asText();
-                    Integer roomsCount = accommodationNode.get("roomsCount").asInt();
-                    Integer surface = accommodationNode.get("surface").asInt();
+            for (JsonNode accommodationNode : propertiesNode) {
+                String id = accommodationNode.get("id").asText();
+                String name = accommodationNode.get("name").asText();
+                Double price = accommodationNode.get("price").asDouble();
+                Integer chargesPrice = accommodationNode.get("chargesPrice").asInt();
+                String description = accommodationNode.get("description").asText();
+                String address = accommodationNode.get("address").asText();
+                Integer roomsCount = accommodationNode.get("roomsCount").asInt();
+                Integer surface = accommodationNode.get("surface").asInt();
+                String type = accommodationNode.get("type").asText();
 
-                    Accommodation accommodation = new Accommodation(id, name, price, description, address, roomsCount, surface);
-                    accommodations.add(accommodation);
-                }
-
-                return FXCollections.observableArrayList(accommodations);
-            } else {
-                System.err.println("Unexpected JSON structure. Unable to deserialize accommodations.");
-                return FXCollections.observableArrayList();
+                Accommodation accommodation = new Accommodation(id, name, price, chargesPrice, description, address, roomsCount, surface, type);
+                accommodations.add(accommodation);
             }
+
+            return FXCollections.observableArrayList(accommodations);
+        } else {
+            System.err.println("Unexpected JSON structure. Unable to deserialize accommodations.");
+            return FXCollections.observableArrayList();
+        }
     }
 
     public ObservableList<UserAccount> getUsers() {
-        JsonNode rootNode = sendHttpRequest("/user", HttpMethod.GET);
+        JsonNode rootNode = sendHttpRequest("/user", HttpMethod.GET, Optional.empty());
         System.out.println(rootNode);
 
         if (rootNode != null && rootNode.isArray()) {
@@ -202,9 +218,43 @@ public class RequestService {
         }
     }
 
+    public boolean updateProperty(Accommodation accommodation) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            // Convert Accommodation object to JSON string
+            ObjectNode accommodationJsonNode = objectMapper.createObjectNode();
+            accommodationJsonNode.put("id", accommodation.getId());
+            accommodationJsonNode.put("name", accommodation.getName());
+            accommodationJsonNode.put("price", accommodation.getPrice());
+            accommodationJsonNode.put("chargesPrice", accommodation.getChargesPrice());
+            accommodationJsonNode.put("description", accommodation.getDescription());
+            accommodationJsonNode.put("address", accommodation.getAddress());
+            accommodationJsonNode.put("roomsCount", accommodation.getRoomsCount());
+            accommodationJsonNode.put("surface", accommodation.getSurface());
+            accommodationJsonNode.put("type", accommodation.getType());
+
+            // Convert JSON object to JSON string
+            String accommodationJson = objectMapper.writeValueAsString(accommodationJsonNode);
+
+            System.out.println(accommodationJson);
+
+            // Send PUT request with JSON body
+            JsonNode rootNode = sendHttpRequest("/properties/" + accommodation.getId(), HttpMethod.PUT, Optional.of(accommodationJson));
+
+            // You can handle the response as needed
+            System.out.println("Response from updateProperty: " + rootNode);
+
+            return true;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public ObservableList<UserAccount> getApply() {
 
-        JsonNode rootNode = sendHttpRequest("/properties/apply", HttpMethod.GET);
+        JsonNode rootNode = sendHttpRequest("/properties/apply", HttpMethod.GET, Optional.empty());
         System.out.println(rootNode);
 /*
         if (rootNode != null && rootNode.isArray()) {

@@ -1,23 +1,21 @@
 package com.eseo.lagence.lagence;
 
-import javafx.collections.FXCollections;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
 public class AccommodationView {
     private Button addButton;
@@ -27,16 +25,19 @@ public class AccommodationView {
     public Button getAddButton() {
         return addButton;
     }
+
     public Button getModifyButton() {
         return modifyButton;
     }
+
     public Button getDeleteButton() {
         return deleteButton;
     }
 
 
-    public AccommodationView(){
+    public AccommodationView() {
     }
+
     private Button createDeleteButton() {
         FontAwesomeIconView iconView = new FontAwesomeIconView(FontAwesomeIcon.TRASH);
         iconView.setSize("1.5em");
@@ -59,7 +60,7 @@ public class AccommodationView {
         return button;
     }
 
-    private TableCell createDeleteCell(){
+    private TableCell createDeleteCell() {
         deleteButton = createDeleteButton(); //make the button unique for the button event listener
 
         return new TableCell<Accommodation, Accommodation>() {
@@ -72,13 +73,14 @@ public class AccommodationView {
                         System.out.println("OK");
                         String endpoint = "/properties/" + accommodation.getId();
                         System.out.println(endpoint);
-                        RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.DELETE);
+                        RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.DELETE, Optional.empty());
                         StageManager.getInstance().setView(StageManager.SceneView.ACCOMMODATION_SCENE);
                     } else {
                         System.out.println("Cancel");
                     }
                 });
             }
+
             @Override
             protected void updateItem(Accommodation item, boolean empty) {
                 super.updateItem(item, empty);
@@ -92,7 +94,7 @@ public class AccommodationView {
         };
     }
 
-    private TableCell createPriceCell(){
+    private TableCell createPriceCell() {
         return new TableCell<Accommodation, Double>() {
             @Override
             protected void updateItem(Double item, boolean empty) {
@@ -126,7 +128,9 @@ public class AccommodationView {
 
         this.addButton = new Button();
         addButton.setGraphic(addButtonLabel);
-        addButton.setOnAction(event -> {StageManager.getInstance().setView(StageManager.SceneView.MODIFY_ACCOMMODATION_SCENE);});
+        addButton.setOnAction(event -> {
+            StageManager.getInstance().showModificationAccommodationModal(new Accommodation(), AccommodationModalView.Mode.CREATE);
+        });
 
 
         // Create a VBox to contain the button
@@ -135,7 +139,6 @@ public class AccommodationView {
 
         return addBox;
     }
-
 
 
     private VBox createTable(ObservableList<Accommodation> data) {
@@ -156,7 +159,6 @@ public class AccommodationView {
 
         colPrice.setCellFactory(tc -> createPriceCell());
 
-
         colName.setMinWidth(590.00);
         colName.setMaxWidth(590.00);
         colName.setStyle("-fx-alignment: CENTER;");
@@ -173,25 +175,25 @@ public class AccommodationView {
         tableAccommodation.getColumns().addAll(colName, colPrice, colLocation, colDelete);
 
         /*ObservableList<Accommodation> data = FXCollections.observableArrayList(
-                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36),
-                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
-                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84),
-                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36 ),
-                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
-                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84),
-                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36),
-                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
-                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36),
-                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36),
-                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
-                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84),
-                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36 ),
-                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
-                new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84),
-                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36),
-                new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
-                new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36)
-                );
+            new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36),
+            new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
+            new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84),
+            new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36 ),
+            new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
+            new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84),
+            new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36),
+            new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
+            new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36),
+            new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36),
+            new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
+            new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84),
+            new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36 ),
+            new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
+            new Accommodation(3, "Apparteent Doutre", 100.58, "bla bla bla", "2 rue TB", 3 , 84),
+            new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36),
+            new Accommodation(2, "Apparteent Doutre", 50.00, "bla bla bla", "2 rue TB", 5 , 52),
+            new Accommodation(1, "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36)
+        );
 */
         tableAccommodation.setItems(data);
 
@@ -199,8 +201,8 @@ public class AccommodationView {
             TableRow<Accommodation> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && !row.isEmpty() && event.getButton() == MouseButton.PRIMARY) {
-                    String index = row.getItem().getId();
-                    StageManager.getInstance().setView(StageManager.SceneView.MODIFY_ACCOMMODATION_SCENE);
+                    Accommodation accommodation = row.getItem();
+                    StageManager.getInstance().showModificationAccommodationModal(accommodation, AccommodationModalView.Mode.UPDATE);
                 }
             });
             return row;
@@ -213,7 +215,7 @@ public class AccommodationView {
         return tabBox;
     }
 
-    public VBox createBox(){
+    public VBox createBox() {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);

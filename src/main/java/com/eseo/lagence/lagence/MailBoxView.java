@@ -1,5 +1,7 @@
 package com.eseo.lagence.lagence;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,14 +10,14 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 
 import java.util.function.BiConsumer;
-
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
 public class MailBoxView {
 
@@ -35,7 +37,9 @@ public class MailBoxView {
         return viewButton;
     }
 
-    public MailBoxView(){}
+    public MailBoxView() {
+    }
+
     private Button createButton(FontAwesomeIcon icon, String color) {
         FontAwesomeIconView iconView = new FontAwesomeIconView(icon);
         iconView.setSize("1.5em");
@@ -60,7 +64,7 @@ public class MailBoxView {
         return button;
     }
 
-    private TableCell createDeclineCell(){
+    private TableCell createDeclineCell() {
         declineButton = createButton(FontAwesomeIcon.CLOSE, "#1c1c1e");
 
         return new TableCell<RequestAccommodation, RequestAccommodation>() {
@@ -77,6 +81,7 @@ public class MailBoxView {
                     }
                 });
             }
+
             @Override
             protected void updateItem(RequestAccommodation item, boolean empty) {
                 super.updateItem(item, empty);
@@ -90,7 +95,7 @@ public class MailBoxView {
         };
     }
 
-    private TableCell createAcceptCell(){
+    private TableCell createAcceptCell() {
         acceptButton = createButton(FontAwesomeIcon.CHECK, "#ffa920");
 
         return new TableCell<RequestAccommodation, RequestAccommodation>() {
@@ -107,6 +112,7 @@ public class MailBoxView {
                     }
                 });
             }
+
             @Override
             protected void updateItem(RequestAccommodation item, boolean empty) {
                 super.updateItem(item, empty);
@@ -127,7 +133,7 @@ public class MailBoxView {
 
         VBox titleBox = new VBox(titleLabel);
         titleLabel.setAlignment(Pos.CENTER);
-        titleLabel.setPadding(new Insets(20,0,0,0));
+        titleLabel.setPadding(new Insets(20, 0, 0, 0));
         return titleBox;
     }
 
@@ -169,13 +175,13 @@ public class MailBoxView {
         tableRequests.getColumns().addAll(colFirstName, colName, colAccommodation, colAccept, colDecline);
 
         ObservableList<RequestAccommodation> data = FXCollections.observableArrayList(
-                new RequestAccommodation("1", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, "t", "r", 2, 22),
-                new RequestAccommodation("2", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, "t", "r", 2, 22),
-                new RequestAccommodation("3", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, "t", "r", 2, 22),
-                new RequestAccommodation("4", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, "t", "r", 2, 22),
-                new RequestAccommodation("5", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, "t", "r", 2, 22),
-                new RequestAccommodation("6", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, "t", "r", 2, 22)
-                );
+                new RequestAccommodation("1", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, 5, "t", "r", 2, 22),
+                new RequestAccommodation("2", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, 5, "t", "r", 2, 22),
+                new RequestAccommodation("3", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, 5, "t", "r", 2, 22),
+                new RequestAccommodation("4", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, 5, "t", "r", 2, 22),
+                new RequestAccommodation("5", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, 5, "t", "r", 2, 22),
+                new RequestAccommodation("6", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, 5, "t", "r", 2, 22)
+        );
 
         tableRequests.setItems(data);
 
@@ -198,7 +204,7 @@ public class MailBoxView {
         return tabBox;
     }
 
-    public VBox createBox(){
+    public VBox createBox() {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);

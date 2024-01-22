@@ -20,7 +20,7 @@ public class StageManager {
 
     private MailBoxView mailBoxView;
 
-    private ModificationAccommodationView modificationAccommodationView;
+    private AccommodationModalView accommodationModalView;
 
     private RequestDetailView requestDetailView;
 
@@ -34,11 +34,15 @@ public class StageManager {
         this.modalStage = new Stage();
         modalStage.initModality(Modality.APPLICATION_MODAL);
         modalStage.setTitle("");
+        modalStage.initOwner(stage);
+        modalStage.setResizable(false);
+        modalStage.initModality(Modality.APPLICATION_MODAL);
+        //modalStage.setAlwaysOnTop(true);
 
         this.navBarView = new NavBarView();
         this.accommodationView = new AccommodationView();
         this.mailBoxView = new MailBoxView();
-        this.modificationAccommodationView = new ModificationAccommodationView();
+        this.accommodationModalView = new AccommodationModalView();
         this.requestDetailView = new RequestDetailView();
         this.tenantView = new TenantView();
         this.usersView = new UsersView();
@@ -50,13 +54,13 @@ public class StageManager {
     }
 
     public static StageManager getInstance() {
-        if(StageManager.instance == null) {
+        if (StageManager.instance == null) {
             StageManager.instance = new StageManager();
         }
         return StageManager.instance;
     }
 
-    public void initStage(Stage stage, SceneView sceneView){
+    public void initStage(Stage stage, SceneView sceneView) {
         this.stage = stage;
 
         setView(sceneView);
@@ -69,11 +73,11 @@ public class StageManager {
         stage.setTitle("L'Agence");
     }
 
-    public Stage getStage(){
+    public Stage getStage() {
         return this.stage;
     }
 
-    public enum SceneView{
+    public enum SceneView {
         ACCOMMODATION_SCENE,
         MODIFY_ACCOMMODATION_SCENE,
         REQUEST_DETAIL_SCENE,
@@ -82,22 +86,23 @@ public class StageManager {
         USERS_SCENE,
     }
 
-    public void showModificationAccommodationModal(Accommodation accommodation) {
-        VBox vBox = new VBox(modificationAccommodationView.createBox(accommodation));
+    public void showModificationAccommodationModal(Accommodation accommodation, AccommodationModalView.Mode mode) {
+        VBox vBox = new VBox(accommodationModalView.createBox(accommodation, mode));
         setModalScene(new Scene(vBox));
     }
+
     public void showRequestDetailModal(RequestAccommodation requestAccommodation) {
         VBox vBox = new VBox(requestDetailView.createBox(requestAccommodation));
         setModalScene(new Scene(vBox));
     }
 
-        public void setView(SceneView sceneView) {
+    public void setView(SceneView sceneView) {
         System.out.println(sceneView);
 
         Scene lastScene = stage.getScene();
 
         VBox vBox = null;
-        switch (sceneView){
+        switch (sceneView) {
             case ACCOMMODATION_SCENE -> {
                 vBox = new VBox(navBarView.createNavBar(), accommodationView.createBox());
             }
@@ -128,6 +133,10 @@ public class StageManager {
     public void setModalScene(Scene scene) {
         this.modalStage.setScene(scene);
         this.modalStage.show();
+    }
+
+    public void closeModalScene() {
+        this.modalStage.close();
     }
 
     public boolean showAlert(String message) {

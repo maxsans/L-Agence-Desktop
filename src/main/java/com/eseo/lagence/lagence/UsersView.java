@@ -1,19 +1,21 @@
 package com.eseo.lagence.lagence;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
+import java.util.Optional;
 import java.util.function.BiConsumer;
-
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
 public class UsersView {
 
@@ -24,8 +26,9 @@ public class UsersView {
         return deleteButton;
     }
 
-    public UsersView(){
+    public UsersView() {
     }
+
     private Button createDeleteButton() {
         FontAwesomeIconView iconView = new FontAwesomeIconView(FontAwesomeIcon.TRASH);
         iconView.setSize("1.5em");
@@ -48,7 +51,7 @@ public class UsersView {
         return button;
     }
 
-    private TableCell createDeleteCell(){
+    private TableCell createDeleteCell() {
         deleteButton = createDeleteButton(); //make the button unique for the button event listener
 
         return new TableCell<UserAccount, UserAccount>() {
@@ -60,13 +63,14 @@ public class UsersView {
                     if (StageManager.getInstance().showAlert("Êtes-vous sûr de supprimer cet utilisateur?")) {
                         System.out.println("OK");
                         String endpoint = "/user/" + user.getId();
-                        RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.DELETE);
+                        RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.DELETE, Optional.empty());
                         StageManager.getInstance().setView(StageManager.SceneView.USERS_SCENE);
                     } else {
                         System.out.println("Cancel");
                     }
                 });
             }
+
             @Override
             protected void updateItem(UserAccount item, boolean empty) {
                 super.updateItem(item, empty);
@@ -96,7 +100,7 @@ public class UsersView {
 
         VBox titleBox = new VBox(titleLabel);
         titleLabel.setAlignment(Pos.CENTER);
-        titleLabel.setPadding(new Insets(20,0,0,0));
+        titleLabel.setPadding(new Insets(20, 0, 0, 0));
         return titleBox;
     }
 
@@ -140,7 +144,6 @@ public class UsersView {
         tableUsers.getColumns().addAll(colFirstName, colName, colMail, colRole, colDelete);
 
 
-
         ObservableList<UserAccount> data = users;
 
         tableUsers.setItems(data);
@@ -163,7 +166,7 @@ public class UsersView {
         return tabBox;
     }
 
-    public VBox createBox(){
+    public VBox createBox() {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);
