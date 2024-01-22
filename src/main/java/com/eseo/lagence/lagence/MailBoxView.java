@@ -1,7 +1,6 @@
 package com.eseo.lagence.lagence;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -132,7 +131,7 @@ public class MailBoxView {
     }
 
 
-    private VBox createTable() {
+    private VBox createTable(ObservableList<RequestAccommodation> requestsAccommodations) {
         TableView<RequestAccommodation> tableRequests = new TableView<>();
         tableRequests.setMinWidth(1402);
         tableRequests.setMaxWidth(1402);
@@ -168,16 +167,8 @@ public class MailBoxView {
 
         tableRequests.getColumns().addAll(colFirstName, colName, colAccommodation, colAccept, colDecline);
 
-        ObservableList<RequestAccommodation> data = FXCollections.observableArrayList(
-                new RequestAccommodation("1", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, "t", "r", 2, 22),
-                new RequestAccommodation("2", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, "t", "r", 2, 22),
-                new RequestAccommodation("3", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, "t", "r", 2, 22),
-                new RequestAccommodation("4", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, "t", "r", 2, 22),
-                new RequestAccommodation("5", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, "t", "r", 2, 22),
-                new RequestAccommodation("6", "1", "test@gmail.com", "test", "T", "1", "e", 1.01, "t", "r", 2, 22)
-                );
 
-        tableRequests.setItems(data);
+        tableRequests.setItems(requestsAccommodations);
 
         tableRequests.setRowFactory(tv -> {
             TableRow<RequestAccommodation> row = new TableRow<>();
@@ -215,12 +206,13 @@ public class MailBoxView {
         row1.setVgrow(Priority.ALWAYS);
         gridPane.getRowConstraints().add(row1);
 
+        ObservableList<RequestAccommodation> requestsAccommodations = RequestService.getInstance().getApply();
 
         // Ligne 0
         gridPane.add(createTitle(), 0, 0, 1, 1);
 
         // Ligne 1
-        gridPane.add(createTable(), 0, 1, 1, 1);
+        gridPane.add(createTable(requestsAccommodations), 0, 1, 1, 1);
 
         VBox vBox = new VBox(gridPane);
 

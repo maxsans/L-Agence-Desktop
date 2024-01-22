@@ -1,15 +1,21 @@
 package com.eseo.lagence.lagence;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.stage.FileChooser;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -98,6 +104,7 @@ public class RequestService {
         // Create a login request
         HttpRequest loginRequest = HttpRequest.newBuilder()
                 .uri(URI.create(endpoint))
+                .header("Cookie", this.cookieString)
                 .POST(HttpRequest.BodyPublishers.ofString(""))
                 .build();
 
@@ -135,7 +142,6 @@ public class RequestService {
                 requestBuilder = requestBuilder.DELETE();
                 break;
         }
-
         HttpRequest httpRequest = requestBuilder.build();
 
         try {
@@ -202,30 +208,73 @@ public class RequestService {
         }
     }
 
-    public ObservableList<UserAccount> getApply() {
+    public ObservableList<RequestAccommodation> getApply() {
 
-        JsonNode rootNode = sendHttpRequest("/properties/apply", HttpMethod.GET);
+        JsonNode rootNode = sendHttpRequest("/properties/apply", HttpMethod.POST);
         System.out.println(rootNode);
-/*
-        if (rootNode != null && rootNode.isArray()) {
-            List<UserAccount> userAccounts = new ArrayList<>();
+        List<RequestAccommodation> requestsAccommodation = new ArrayList<>();
 
-            for (JsonNode userNode : rootNode) {
-                String id = userNode.get("id").asText();
+        for (JsonNode jsonNode : rootNode) {
+            JsonNode propertyNode = jsonNode.get("property");
+            JsonNode userNode = jsonNode.get("user");
+
+            if (propertyNode != null && userNode != null) {
+                String id = jsonNode.get("id").asText();
+                String motivationText = jsonNode.get("motivationText").asText();
+                String idCardPath = jsonNode.get("idCardPath").asText();
+                String proofOfAddressPath = jsonNode.get("proofOfAddressPath").asText();
+                String state = jsonNode.get("state").asText();
+
+                String accomodationId = propertyNode.get("id").asText();
+                String name = propertyNode.get("name").asText();
+                Double price = propertyNode.get("price").asDouble();
+                String description = propertyNode.get("description").asText();
+                String address = propertyNode.get("address").asText();
+                Integer roomsCount = propertyNode.get("roomsCount").asInt();
+                Integer surface = propertyNode.get("surface").asInt();
+
+                String userId = userNode.get("id").asText();
                 String email = userNode.get("email").asText();
                 String role = userNode.get("role").asText();
                 String firstName = userNode.get("firstName").asText();
                 String lastName = userNode.get("lastName").asText();
 
-                UserAccount userAccount = new UserAccount(id, email, role, firstName, lastName);
-                userAccounts.add(userAccount);
-            }
-            return FXCollections.observableArrayList(userAccounts);
-        } else {
-            System.err.println("Unexpected JSON structure. Unable to deserialize users.");
-            return FXCollections.observableArrayList();
-        }*/
-        return FXCollections.observableArrayList();
+                Accommodation accommodation = new Accommodation(accomodationId, name, price, description, address, roomsCount, surface);
+                UserAccount userAccount = new UserAccount(userId, email, role, firstName, lastName);
 
+                requestsAccommodation.add(new RequestAccommodation(id, motivationText, idCardPath, proofOfAddressPath, state, userAccount, accommodation));
+            } else {
+                System.err.println("Unexpected JSON structure. Unable to deserialize apply.");
+                return FXCollections.observableArrayList();
+            }
+
+        }
+        return FXCollections.observableArrayList(requestsAccommodation);
+    }
+    public void downloadPicture(String dossierPath){
+        String urlPath = baseUrl + dossierPath;
+        System.out.println("Téléchargement du dossier: " + dossierPath);
+        String fileName = dossierPath;
+        fileName.substring("uploads/".length());
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+        fileChooser.setInitialFileName(fileName);
+
+        File selectedFile = fileChooser.showSaveDialog(null);
+
+        if (selectedFile != null) {
+            try {
+                URI uri = new URI(urlPath);
+                URL url = uri.toURL();
+                var inputStream = url.openStream();
+                var destination = selectedFile.toPath();
+                Files.copy(inputStream, destination, StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("File downloaded and saved to: " + destination);
+            } catch (URISyntaxException | MalformedURLException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

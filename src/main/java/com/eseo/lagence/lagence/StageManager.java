@@ -82,6 +82,7 @@ public class StageManager {
         USERS_SCENE,
     }
 
+
     public void showModificationAccommodationModal(Accommodation accommodation) {
         VBox vBox = new VBox(modificationAccommodationView.createBox(accommodation));
         setModalScene(new Scene(vBox));
@@ -128,6 +129,9 @@ public class StageManager {
     public void setModalScene(Scene scene) {
         this.modalStage.setScene(scene);
         this.modalStage.show();
+    }
+    public void deleteModalScene() {
+        this.modalStage.close();
     }
 
     public boolean showAlert(String message) {

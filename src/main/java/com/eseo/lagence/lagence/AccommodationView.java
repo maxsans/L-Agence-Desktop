@@ -1,6 +1,5 @@
 package com.eseo.lagence.lagence;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -199,8 +198,8 @@ public class AccommodationView {
             TableRow<Accommodation> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && !row.isEmpty() && event.getButton() == MouseButton.PRIMARY) {
-                    String index = row.getItem().getId();
-                    StageManager.getInstance().setView(StageManager.SceneView.MODIFY_ACCOMMODATION_SCENE);
+                    Accommodation accommodation = row.getItem();
+                    StageManager.getInstance().showModificationAccommodationModal(accommodation);
                 }
             });
             return row;
