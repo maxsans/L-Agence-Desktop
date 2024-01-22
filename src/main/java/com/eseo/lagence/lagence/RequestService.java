@@ -20,6 +20,9 @@ public class RequestService {
 
     private String cookieString;
 
+    private UserAccount userLogged;
+
+
     private String baseUrl = "http://localhost:3000/api";
 
     public enum HttpMethod{
@@ -35,7 +38,11 @@ public class RequestService {
         return RequestService.instance;
     }
 
-    public void login(String loginEndpoint, String username, String password) {
+    public UserAccount getUserLogged() {
+        return userLogged;
+    }
+
+    public boolean login(String loginEndpoint, String username, String password) {
         String endpoint = baseUrl + loginEndpoint;
 
         HttpClient client = HttpClient.newHttpClient();
@@ -50,16 +57,36 @@ public class RequestService {
         try {
             // Send the login request
             HttpResponse<String> loginResponse = client.send(loginRequest, HttpResponse.BodyHandlers.ofString());
+            System.out.println("Response Body:\n" + loginResponse.body());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(loginResponse.body());
+            JsonNode userNode = rootNode.get("user");
+
+            if (userNode != null) {
+                String id = userNode.get("id").asText();
+                String email = userNode.get("email").asText();
+                String role = userNode.get("role").asText();
+                String firstName = userNode.get("firstName").asText();
+                String lastName = userNode.get("lastName").asText();
+                this.userLogged = new UserAccount(id, email, role, firstName, lastName);
+            }
+            else {
+                System.err.println("Unexpected JSON structure. Unable to deserialize users.");
+                return false;
+            }
 
             Map<String, List<String>> headers = loginResponse.headers().map();
             List<String> cookies = headers.get("Set-Cookie");
             String cookieString = String.join("; ", cookies);
             this.cookieString = cookieString;
-            return;
+            return true;
 
         } catch (Exception e) {
             e.printStackTrace();
-            return;
+            this.userLogged = null;
+            this.cookieString = null;
+            return false;
         }
     }
 
@@ -77,6 +104,7 @@ public class RequestService {
         try {
             // Send the login request
             HttpResponse<String> logoutResponse = client.send(loginRequest, HttpResponse.BodyHandlers.ofString());
+            this.userLogged = null;
             this.cookieString = null;
             return;
 
@@ -123,7 +151,7 @@ public class RequestService {
 
     public ObservableList<Accommodation> getAccommodations() {
 
-        JsonNode rootNode = sendHttpRequest("/property", HttpMethod.GET);
+        JsonNode rootNode = sendHttpRequest("/properties", HttpMethod.GET);
 
             JsonNode propertiesNode = rootNode.get("properties");
 
@@ -151,7 +179,6 @@ public class RequestService {
     }
 
     public ObservableList<UserAccount> getUsers() {
-
         JsonNode rootNode = sendHttpRequest("/user", HttpMethod.GET);
         System.out.println(rootNode);
 
@@ -161,10 +188,11 @@ public class RequestService {
             for (JsonNode userNode : rootNode) {
                 String id = userNode.get("id").asText();
                 String email = userNode.get("email").asText();
+                String role = userNode.get("role").asText();
                 String firstName = userNode.get("firstName").asText();
                 String lastName = userNode.get("lastName").asText();
 
-                UserAccount userAccount = new UserAccount(id, email, firstName, lastName);
+                UserAccount userAccount = new UserAccount(id, email, role, firstName, lastName);
                 userAccounts.add(userAccount);
             }
             return FXCollections.observableArrayList(userAccounts);
@@ -172,5 +200,32 @@ public class RequestService {
             System.err.println("Unexpected JSON structure. Unable to deserialize users.");
             return FXCollections.observableArrayList();
         }
+    }
+
+    public ObservableList<UserAccount> getApply() {
+
+        JsonNode rootNode = sendHttpRequest("/properties/apply", HttpMethod.GET);
+        System.out.println(rootNode);
+/*
+        if (rootNode != null && rootNode.isArray()) {
+            List<UserAccount> userAccounts = new ArrayList<>();
+
+            for (JsonNode userNode : rootNode) {
+                String id = userNode.get("id").asText();
+                String email = userNode.get("email").asText();
+                String role = userNode.get("role").asText();
+                String firstName = userNode.get("firstName").asText();
+                String lastName = userNode.get("lastName").asText();
+
+                UserAccount userAccount = new UserAccount(id, email, role, firstName, lastName);
+                userAccounts.add(userAccount);
+            }
+            return FXCollections.observableArrayList(userAccounts);
+        } else {
+            System.err.println("Unexpected JSON structure. Unable to deserialize users.");
+            return FXCollections.observableArrayList();
+        }*/
+        return FXCollections.observableArrayList();
+
     }
 }

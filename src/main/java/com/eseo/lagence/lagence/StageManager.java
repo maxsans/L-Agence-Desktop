@@ -22,6 +22,8 @@ public class StageManager {
 
     private ModificationAccommodationView modificationAccommodationView;
 
+    private RequestDetailView requestDetailView;
+
     private TenantView tenantView;
 
     private UsersView usersView;
@@ -37,6 +39,7 @@ public class StageManager {
         this.accommodationView = new AccommodationView();
         this.mailBoxView = new MailBoxView();
         this.modificationAccommodationView = new ModificationAccommodationView();
+        this.requestDetailView = new RequestDetailView();
         this.tenantView = new TenantView();
         this.usersView = new UsersView();
         this.alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -73,12 +76,22 @@ public class StageManager {
     public enum SceneView{
         ACCOMMODATION_SCENE,
         MODIFY_ACCOMMODATION_SCENE,
+        REQUEST_DETAIL_SCENE,
         TENANT_SCENE,
         MAILBOX_SCENE,
         USERS_SCENE,
     }
 
-    public void setView(SceneView sceneView) {
+    public void showModificationAccommodationModal(Accommodation accommodation) {
+        VBox vBox = new VBox(modificationAccommodationView.createBox(accommodation));
+        setModalScene(new Scene(vBox));
+    }
+    public void showRequestDetailModal(RequestAccommodation requestAccommodation) {
+        VBox vBox = new VBox(requestDetailView.createBox(requestAccommodation));
+        setModalScene(new Scene(vBox));
+    }
+
+        public void setView(SceneView sceneView) {
         System.out.println(sceneView);
 
         Scene lastScene = stage.getScene();
@@ -87,9 +100,6 @@ public class StageManager {
         switch (sceneView){
             case ACCOMMODATION_SCENE -> {
                 vBox = new VBox(navBarView.createNavBar(), accommodationView.createBox());
-            }
-            case MODIFY_ACCOMMODATION_SCENE -> {
-                vBox = new VBox(navBarView.createNavBar(), modificationAccommodationView.createBox());
             }
             case TENANT_SCENE -> {
                 vBox = new VBox(navBarView.createNavBar(), tenantView.createBox());
@@ -117,6 +127,7 @@ public class StageManager {
 
     public void setModalScene(Scene scene) {
         this.modalStage.setScene(scene);
+        this.modalStage.show();
     }
 
     public boolean showAlert(String message) {

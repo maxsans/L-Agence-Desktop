@@ -146,7 +146,7 @@ public class MailBoxView {
 
         colFirstName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUser().getFirstName()));
         colName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUser().getLastName()));
-        colAccommodation.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAccommodation().getAddress()));
+        colAccommodation.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAccommodation().getName()));
         colAccept.setCellFactory(param -> createAcceptCell());
         colDecline.setCellFactory(param -> createDeclineCell());
 
@@ -183,8 +183,9 @@ public class MailBoxView {
             TableRow<RequestAccommodation> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && !row.isEmpty() && event.getButton() == MouseButton.PRIMARY) {
-                    String index = row.getItem().getId();
-                    StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);
+                    RequestAccommodation selectedRequest = row.getItem();
+                    System.out.println("OK");
+                    StageManager.getInstance().showRequestDetailModal(selectedRequest);
                 }
             });
             return row;

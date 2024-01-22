@@ -70,7 +70,7 @@ public class AccommodationView {
                     Accommodation accommodation = getTableView().getItems().get(getIndex());
                     if (StageManager.getInstance().showAlert("Êtes-vous sûr de supprimer cet élément?")) {
                         System.out.println("OK");
-                        String endpoint = "/property/" + accommodation.getId();
+                        String endpoint = "/properties/" + accommodation.getId();
                         System.out.println(endpoint);
                         RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.DELETE);
                         StageManager.getInstance().setView(StageManager.SceneView.ACCOMMODATION_SCENE);
