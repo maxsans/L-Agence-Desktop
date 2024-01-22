@@ -1,5 +1,9 @@
-package com.eseo.lagence.lagence;
+package com.eseo.lagence.lagence.services;
 
+import com.eseo.lagence.lagence.models.Accommodation;
+import com.eseo.lagence.lagence.models.Rental;
+import com.eseo.lagence.lagence.models.RequestAccommodation;
+import com.eseo.lagence.lagence.models.UserAccount;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,4 +1,7 @@
-package com.eseo.lagence.lagence;
+package com.eseo.lagence.lagence.models;
+
+import com.eseo.lagence.lagence.models.Accommodation;
+import com.eseo.lagence.lagence.models.UserAccount;
 
 public class RequestAccommodation {
 

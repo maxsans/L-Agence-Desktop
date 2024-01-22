@@ -10,4 +10,12 @@ module com.eseo.lagence.lagence {
 
     opens com.eseo.lagence.lagence to javafx.fxml;
     exports com.eseo.lagence.lagence;
+    exports com.eseo.lagence.lagence.services;
+    opens com.eseo.lagence.lagence.services to javafx.fxml;
+    exports com.eseo.lagence.lagence.models;
+    opens com.eseo.lagence.lagence.models to javafx.fxml;
+    exports com.eseo.lagence.lagence.views;
+    opens com.eseo.lagence.lagence.views to javafx.fxml;
+    exports com.eseo.lagence.lagence.utils;
+    opens com.eseo.lagence.lagence.utils to javafx.fxml;
 }

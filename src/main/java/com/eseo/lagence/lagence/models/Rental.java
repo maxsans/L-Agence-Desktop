@@ -1,4 +1,4 @@
-package com.eseo.lagence.lagence;
+package com.eseo.lagence.lagence.models;
 
 public class Rental{
     private String id;

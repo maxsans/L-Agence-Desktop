@@ -1,5 +1,8 @@
-package com.eseo.lagence.lagence;
+package com.eseo.lagence.lagence.views;
 
+import com.eseo.lagence.lagence.utils.StageManager;
+import com.eseo.lagence.lagence.models.Accommodation;
+import com.eseo.lagence.lagence.services.RequestService;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;

@@ -1,5 +1,7 @@
-package com.eseo.lagence.lagence;
+package com.eseo.lagence.lagence.views;
 
+import com.eseo.lagence.lagence.utils.StageManager;
+import com.eseo.lagence.lagence.services.RequestService;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.geometry.HPos;
@@ -14,11 +16,8 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-
-import java.util.function.Consumer;
 
 public class NavBarView {
 
@@ -178,7 +177,8 @@ public class NavBarView {
             disconnectButton.setScaleX(1.0);
             disconnectButton.setScaleY(1.0);
         });
-        listAccommodationsButton.setOnAction(event -> {StageManager.getInstance().setView(StageManager.SceneView.ACCOMMODATION_SCENE);});
+        listAccommodationsButton.setOnAction(event -> {
+            StageManager.getInstance().setView(StageManager.SceneView.ACCOMMODATION_SCENE);});
         bedButton.setOnAction(event -> {StageManager.getInstance().setView(StageManager.SceneView.TENANT_SCENE);});
         mailboxButton.setOnAction(event -> {StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);});
         usersButton.setOnAction(event -> {StageManager.getInstance().setView(StageManager.SceneView.USERS_SCENE);});

@@ -1,7 +1,9 @@
-package com.eseo.lagence.lagence;
+package com.eseo.lagence.lagence.views;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import com.eseo.lagence.lagence.utils.StageManager;
+import com.eseo.lagence.lagence.models.Accommodation;
+import com.eseo.lagence.lagence.models.Rental;
+import com.eseo.lagence.lagence.services.RequestService;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

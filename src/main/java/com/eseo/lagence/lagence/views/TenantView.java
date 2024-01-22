@@ -1,8 +1,12 @@
-package com.eseo.lagence.lagence;
+package com.eseo.lagence.lagence.views;
 
+import com.eseo.lagence.lagence.models.Accommodation;
+import com.eseo.lagence.lagence.models.Rental;
+import com.eseo.lagence.lagence.models.UserAccount;
+import com.eseo.lagence.lagence.services.RequestService;
+import com.eseo.lagence.lagence.views.ModalTenant;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -12,7 +16,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;

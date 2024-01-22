@@ -1,6 +1,8 @@
 package com.eseo.lagence.lagence;
 
 
+import com.eseo.lagence.lagence.services.RequestService;
+import com.eseo.lagence.lagence.utils.StageManager;
 import javafx.application.Application;
 
 import javafx.stage.Stage;
@@ -9,7 +11,7 @@ import java.io.IOException;
 
 
 
-public class HelloApplication extends Application {
+public class App extends Application {
 
     private RequestService requestService;
 

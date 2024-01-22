@@ -1,4 +1,4 @@
-package com.eseo.lagence.lagence;
+package com.eseo.lagence.lagence.models;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
