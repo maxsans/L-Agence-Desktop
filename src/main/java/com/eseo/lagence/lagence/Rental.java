@@ -1,21 +1,22 @@
 package com.eseo.lagence.lagence;
 
 public class Rental{
-    private int id;
+    private String id;
     private Accommodation accommodation;
     private UserAccount user;
 
-    public Rental(int id, Accommodation accommodation, UserAccount user) {
+    public Rental(String  id, Accommodation accommodation, UserAccount user) {
         this.id = id;
         this.accommodation = accommodation;
         this.user = user;
     }
 
-    public int getId() {
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

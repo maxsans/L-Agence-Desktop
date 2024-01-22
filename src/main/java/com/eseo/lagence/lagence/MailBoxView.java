@@ -67,9 +67,11 @@ public class MailBoxView {
 
             {
                 declineBtn.setOnAction(event -> {
-                    RequestAccommodation accommodation = getTableView().getItems().get(getIndex());
+                    RequestAccommodation requestAccommodation = getTableView().getItems().get(getIndex());
                     if (StageManager.getInstance().showAlert("Êtes-vous sûr de supprimer la demande?")) {
                         System.out.println("OK");
+                        String endpoint = "/properties/apply/" + requestAccommodation.getId()+"/"+"refused";
+                        RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.POST);
                         StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);
                     } else {
                         System.out.println("Cancel");
@@ -97,9 +99,11 @@ public class MailBoxView {
 
             {
                 acceptBtn.setOnAction(event -> {
-                    RequestAccommodation accommodation = getTableView().getItems().get(getIndex());
+                    RequestAccommodation requestAccommodation = getTableView().getItems().get(getIndex());
                     if (StageManager.getInstance().showAlert("Êtes-vous sûr d'accepter la demande?")) {
                         System.out.println("OK");
+                        String endpoint = "/properties/apply/" + requestAccommodation.getId()+"/"+"accepted";
+                        RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.POST);
                         StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);
                     } else {
                         System.out.println("Cancel");
