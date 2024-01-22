@@ -182,7 +182,10 @@ public class NavBarView {
         bedButton.setOnAction(event -> {StageManager.getInstance().setView(StageManager.SceneView.TENANT_SCENE);});
         mailboxButton.setOnAction(event -> {StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);});
         usersButton.setOnAction(event -> {StageManager.getInstance().setView(StageManager.SceneView.USERS_SCENE);});
-        disconnectButton.setOnAction(event -> {StageManager.getInstance().setView(StageManager.SceneView.ACCOMMODATION_SCENE);});
+        disconnectButton.setOnAction(event -> {
+            RequestService.getInstance().logout();
+            StageManager.getInstance().setView(StageManager.SceneView.LOGIN_SCENE);
+        });
 
 
 

@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -13,6 +14,8 @@ public class StageManager {
     private Stage modalStage;
     private Stage stage;
     private static StageManager instance;
+
+    private LoginView loginView;
 
     private NavBarView navBarView;
 
@@ -39,6 +42,7 @@ public class StageManager {
         modalStage.initModality(Modality.APPLICATION_MODAL);
         //modalStage.setAlwaysOnTop(true);
 
+        this.loginView = new LoginView();
         this.navBarView = new NavBarView();
         this.accommodationView = new AccommodationView();
         this.mailBoxView = new MailBoxView();
@@ -77,7 +81,8 @@ public class StageManager {
         return this.stage;
     }
 
-    public enum SceneView {
+    public enum SceneView{
+        LOGIN_SCENE,
         ACCOMMODATION_SCENE,
         MODIFY_ACCOMMODATION_SCENE,
         REQUEST_DETAIL_SCENE,
@@ -102,7 +107,10 @@ public class StageManager {
         Scene lastScene = stage.getScene();
 
         VBox vBox = null;
-        switch (sceneView) {
+        switch (sceneView){
+            case LOGIN_SCENE -> {
+                vBox = new VBox(loginView.create());
+            }
             case ACCOMMODATION_SCENE -> {
                 vBox = new VBox(navBarView.createNavBar(), accommodationView.createBox());
             }
@@ -133,6 +141,9 @@ public class StageManager {
     public void setModalScene(Scene scene) {
         this.modalStage.setScene(scene);
         this.modalStage.show();
+    }
+    public void deleteModalScene() {
+        this.modalStage.close();
     }
 
     public void closeModalScene() {
