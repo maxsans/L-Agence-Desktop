@@ -1,7 +1,7 @@
 package com.eseo.lagence.lagence.views;
 
 import com.eseo.lagence.lagence.utils.StageManager;
-import com.eseo.lagence.lagence.models.Accommodation;
+import com.eseo.lagence.lagence.models.Properties;
 import com.eseo.lagence.lagence.models.Rental;
 import com.eseo.lagence.lagence.services.RequestService;
 import javafx.geometry.Insets;
@@ -82,7 +82,7 @@ public class ModalTenant {
         boxAccommodation.setStyle("-fx-alignment: TOP_CENTER;");
         boxAccommodation.setPadding(new Insets(20, 0, 0, 0));
 
-        Accommodation accommodation = selectedRental.getAccommodation();
+        Properties accommodation = selectedRental.getAccommodation();
 
         Label titleLabel = createLabel("Logement", 30);
         HBox nameBox = createTextWithLabel("Nom : ", accommodation.getName());

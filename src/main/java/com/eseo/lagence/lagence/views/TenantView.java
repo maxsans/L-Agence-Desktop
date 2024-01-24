@@ -1,10 +1,10 @@
 package com.eseo.lagence.lagence.views;
 
-import com.eseo.lagence.lagence.models.Accommodation;
+import com.eseo.lagence.lagence.models.Properties;
 import com.eseo.lagence.lagence.models.Rental;
 import com.eseo.lagence.lagence.models.UserAccount;
+import com.eseo.lagence.lagence.services.RentalService;
 import com.eseo.lagence.lagence.services.RequestService;
-import com.eseo.lagence.lagence.views.ModalTenant;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -58,7 +58,7 @@ public class TenantView {
         colAccommodation.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Rental, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Rental, String> param) {
-                Accommodation accommodation = param.getValue().getAccommodation();
+                Properties accommodation = param.getValue().getAccommodation();
                 return new SimpleStringProperty(accommodation.getName());
             }
         });
@@ -72,7 +72,7 @@ public class TenantView {
 
         tableRental.getColumns().addAll( colTenant, colAccommodation);
 
-        ObservableList<Rental> data = RequestService.getInstance().getTenants();
+        ObservableList<Rental> data = RentalService.getTenants();
 
         tableRental.setItems(data);
 

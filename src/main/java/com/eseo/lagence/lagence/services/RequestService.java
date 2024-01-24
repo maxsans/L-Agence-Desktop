@@ -1,8 +1,8 @@
 package com.eseo.lagence.lagence.services;
 
-import com.eseo.lagence.lagence.models.Accommodation;
+import com.eseo.lagence.lagence.models.Properties;
 import com.eseo.lagence.lagence.models.Rental;
-import com.eseo.lagence.lagence.models.RequestAccommodation;
+import com.eseo.lagence.lagence.models.AccommodationRequest;
 import com.eseo.lagence.lagence.models.UserAccount;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -53,82 +53,6 @@ public class RequestService {
         return RequestService.instance;
     }
 
-    public UserAccount getUserLogged() {
-        return userLogged;
-    }
-
-    public boolean login(String username, String password) {
-        String endpoint = baseUrl + "/auth/login";
-
-        HttpClient client = HttpClient.newHttpClient();
-
-        // Create a login request
-        HttpRequest loginRequest = HttpRequest.newBuilder()
-                .uri(URI.create(endpoint))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString("{\"email\":\"" + username + "\", \"password\":\"" + password + "\"}"))
-                .build();
-
-        try {
-            // Send the login request
-            HttpResponse<String> loginResponse = client.send(loginRequest, HttpResponse.BodyHandlers.ofString());
-            System.out.println("Response Body:\n" + loginResponse.body());
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode rootNode = objectMapper.readTree(loginResponse.body());
-            JsonNode userNode = rootNode.get("user");
-
-            if (userNode != null && userNode.get("role").asText().equals("admin")) {
-                String id = userNode.get("id").asText();
-                String email = userNode.get("email").asText();
-                String role = userNode.get("role").asText();
-                String firstName = userNode.get("firstName").asText();
-                String lastName = userNode.get("lastName").asText();
-                this.userLogged = new UserAccount(id, email, role, firstName, lastName);
-            } else {
-                System.err.println("Unexpected JSON structure. Unable to deserialize users.");
-                return false;
-            }
-
-            Map<String, List<String>> headers = loginResponse.headers().map();
-            List<String> cookies = headers.get("Set-Cookie");
-            String cookieString = String.join("; ", cookies);
-            this.cookieString = cookieString;
-            return true;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            this.userLogged = null;
-            this.cookieString = null;
-            return false;
-        }
-    }
-
-    public void logout() {
-        String endpoint = baseUrl + "/auth/logout";
-
-        HttpClient client = HttpClient.newHttpClient();
-
-        // Create a login request
-        HttpRequest logoutRequest = HttpRequest.newBuilder()
-                .uri(URI.create(endpoint))
-                .header("Cookie", this.cookieString)
-                .POST(HttpRequest.BodyPublishers.ofString(""))
-                .build();
-
-        try {
-            System.out.println("try logout");
-            // Send the login request
-            HttpResponse<String> logoutResponse = client.send(logoutRequest, HttpResponse.BodyHandlers.ofString());
-            this.userLogged = null;
-            this.cookieString = null;
-            return;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-    }
 
     public JsonNode sendHttpRequest(String endpoint, HttpMethod httpMethod, Optional<String> requestBody) {
         HttpClient httpClient = HttpClient.newHttpClient();
@@ -176,183 +100,26 @@ public class RequestService {
         }
     }
 
-    public ObservableList<Accommodation> getAccommodations() {
-
-        JsonNode rootNode = sendHttpRequest("/properties", HttpMethod.GET, Optional.empty());
-
-        JsonNode propertiesNode = rootNode.get("properties");
-
-        if (propertiesNode != null && propertiesNode.isArray()) {
-            List<Accommodation> accommodations = new ArrayList<>();
-
-            for (JsonNode accommodationNode : propertiesNode) {
-                String id = accommodationNode.get("id").asText();
-                String name = accommodationNode.get("name").asText();
-                Double price = accommodationNode.get("price").asDouble();
-                Integer chargesPrice = accommodationNode.get("chargesPrice").asInt();
-                String description = accommodationNode.get("description").asText();
-                String address = accommodationNode.get("address").asText();
-                Integer roomsCount = accommodationNode.get("roomsCount").asInt();
-                Integer surface = accommodationNode.get("surface").asInt();
-                String type = accommodationNode.get("type").asText();
-
-                Accommodation accommodation = new Accommodation(id, name, price, chargesPrice, description, address, roomsCount, surface, type);
-                accommodations.add(accommodation);
-            }
-
-            return FXCollections.observableArrayList(accommodations);
-        } else {
-            System.err.println("Unexpected JSON structure. Unable to deserialize accommodations.");
-            return FXCollections.observableArrayList();
-        }
+    public String getCookieString() {
+        return cookieString;
     }
 
-    public ObservableList<Rental> getTenants() {
-
-        JsonNode rootNode = sendHttpRequest("/user/rental", HttpMethod.GET,Optional.empty() );
-
-
-        if (rootNode != null && rootNode.isArray()) {
-            List<Rental> rentals = new ArrayList<>();
-
-            for (JsonNode userNode : rootNode) {
-                JsonNode propertyNode = userNode.get("rentedProperty");
-
-                String id = userNode.get("id").asText();
-
-                String accomodationId = propertyNode.get("id").asText();
-                String name = propertyNode.get("name").asText();
-                Double price = propertyNode.get("price").asDouble();
-                Integer chargesPrice = propertyNode.get("chargesPrice").asInt();
-                String description = propertyNode.get("description").asText();
-                String address = propertyNode.get("address").asText();
-                Integer roomsCount = propertyNode.get("roomsCount").asInt();
-                Integer surface = propertyNode.get("surface").asInt();
-                String type = propertyNode.get("type").asText();
-
-                String email = userNode.get("email").asText();
-                String role = userNode.get("role").asText();
-                String firstName = userNode.get("firstName").asText();
-                String lastName = userNode.get("lastName").asText();
-                Rental rental = new Rental(id,new Accommodation(accomodationId, name, price, chargesPrice, description, address, roomsCount, surface, type), new UserAccount(id, email, firstName, lastName));
-                rentals.add(rental);
-            }
-            return FXCollections.observableArrayList(rentals);
-        } else {
-            System.err.println("Unexpected JSON structure. Unable to deserialize accommodations.");
-            return FXCollections.observableArrayList();
-        }
+    protected void setCookieString(String cookieString) {
+        this.cookieString = cookieString;
     }
 
-
-
-    public ObservableList<UserAccount> getUsers() {
-        JsonNode rootNode = sendHttpRequest("/user", HttpMethod.GET, Optional.empty());
-        System.out.println(rootNode);
-
-        if (rootNode != null && rootNode.isArray()) {
-            List<UserAccount> userAccounts = new ArrayList<>();
-
-            for (JsonNode userNode : rootNode) {
-                String id = userNode.get("id").asText();
-                String email = userNode.get("email").asText();
-                String role = userNode.get("role").asText();
-                String firstName = userNode.get("firstName").asText();
-                String lastName = userNode.get("lastName").asText();
-
-                UserAccount userAccount = new UserAccount(id, email, role, firstName, lastName);
-                userAccounts.add(userAccount);
-            }
-            return FXCollections.observableArrayList(userAccounts);
-        } else {
-            System.err.println("Unexpected JSON structure. Unable to deserialize users.");
-            return FXCollections.observableArrayList();
-        }
+    public String getBaseUrl() {
+        return baseUrl;
     }
 
-    public boolean updateProperty(Accommodation accommodation) {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        try {
-            // Convert Accommodation object to JSON string
-            ObjectNode accommodationJsonNode = objectMapper.createObjectNode();
-            accommodationJsonNode.put("id", accommodation.getId());
-            accommodationJsonNode.put("name", accommodation.getName());
-            accommodationJsonNode.put("price", accommodation.getPrice());
-            accommodationJsonNode.put("chargesPrice", accommodation.getChargesPrice());
-            accommodationJsonNode.put("description", accommodation.getDescription());
-            accommodationJsonNode.put("address", accommodation.getAddress());
-            accommodationJsonNode.put("roomsCount", accommodation.getRoomsCount());
-            accommodationJsonNode.put("surface", accommodation.getSurface());
-            accommodationJsonNode.put("type", accommodation.getType());
-
-            // Convert JSON object to JSON string
-            String accommodationJson = objectMapper.writeValueAsString(accommodationJsonNode);
-
-            System.out.println(accommodationJson);
-
-            // Send PUT request with JSON body
-            JsonNode rootNode = sendHttpRequest("/properties/" + accommodation.getId(), HttpMethod.PUT, Optional.of(accommodationJson));
-
-            // You can handle the response as needed
-            System.out.println("Response from updateProperty: " + rootNode);
-
-            return true;
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return false;
-        }
+    protected void setUserLogged(UserAccount userLogged) {
+        this.userLogged = userLogged;
     }
 
-    public ObservableList<RequestAccommodation> getApply() {
-
-        JsonNode rootNode = sendHttpRequest("/properties/apply", HttpMethod.POST, Optional.empty());
-        System.out.println(rootNode);
-        List<RequestAccommodation> requestsAccommodation = new ArrayList<>();
-
-        for (JsonNode jsonNode : rootNode) {
-            JsonNode propertyNode = jsonNode.get("property");
-            JsonNode userNode = jsonNode.get("user");
-
-            if (propertyNode != null && userNode != null) {
-                String id = jsonNode.get("id").asText();
-                String motivationText = jsonNode.get("motivationText").asText();
-                String idCardPath = jsonNode.get("idCardPath").asText();
-                String proofOfAddressPath = jsonNode.get("proofOfAddressPath").asText();
-                String state = jsonNode.get("state").asText();
-
-                String accomodationId = propertyNode.get("id").asText();
-                String name = propertyNode.get("name").asText();
-                Double price = propertyNode.get("price").asDouble();
-                String description = propertyNode.get("description").asText();
-                String address = propertyNode.get("address").asText();
-                Integer roomsCount = propertyNode.get("roomsCount").asInt();
-                Integer surface = propertyNode.get("surface").asInt();
-                Integer chargesPrice = propertyNode.get("chargesPrice").asInt();
-                String type = propertyNode.get("type").asText();
-
-
-                String userId = userNode.get("id").asText();
-                String email = userNode.get("email").asText();
-                String role = userNode.get("role").asText();
-                String firstName = userNode.get("firstName").asText();
-                String lastName = userNode.get("lastName").asText();
-
-                Accommodation accommodation = new Accommodation(id, name, price, chargesPrice, description, address, roomsCount, surface, type);
-                UserAccount userAccount = new UserAccount(userId, email, role, firstName, lastName);
-                System.out.println(state);
-
-                if (state.equals("pending")){
-                    requestsAccommodation.add(new RequestAccommodation(id, motivationText, idCardPath, proofOfAddressPath, state, userAccount, accommodation));
-                }
-            } else {
-                System.err.println("Unexpected JSON structure. Unable to deserialize apply.");
-                return FXCollections.observableArrayList();
-            }
-
-        }
-        return FXCollections.observableArrayList(requestsAccommodation);
+    public UserAccount getUserLogged() {
+        return userLogged;
     }
+
     public void downloadPicture(String dossierPath){
         String urlPath = baseUrl + dossierPath;
         System.out.println("Téléchargement du dossier: " + dossierPath);

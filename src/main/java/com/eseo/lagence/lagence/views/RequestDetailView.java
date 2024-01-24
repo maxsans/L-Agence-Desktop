@@ -1,8 +1,8 @@
 package com.eseo.lagence.lagence.views;
 
 import com.eseo.lagence.lagence.utils.StageManager;
-import com.eseo.lagence.lagence.models.Accommodation;
-import com.eseo.lagence.lagence.models.RequestAccommodation;
+import com.eseo.lagence.lagence.models.Properties;
+import com.eseo.lagence.lagence.models.AccommodationRequest;
 import com.eseo.lagence.lagence.services.RequestService;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -48,7 +48,7 @@ public class RequestDetailView {
     }
 
 
-    public GridPane createBox(RequestAccommodation requestAccommodation) {
+    public GridPane createBox(AccommodationRequest requestAccommodation) {
         Text titleCol1 = new Text("Demandeur");
         titleCol1.setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
         titleCol1.setTextAlignment(TextAlignment.CENTER);
@@ -135,7 +135,7 @@ public class RequestDetailView {
         return label;
     }
 
-    private VBox addUserData(RequestAccommodation requestAccommodation) {
+    private VBox addUserData(AccommodationRequest requestAccommodation) {
         Text titleNameLabel = createText("Nom:", 100, TextAlignment.LEFT, false);
         Text nameLabel = createText(requestAccommodation.getUser().getLastName(), 400, TextAlignment.LEFT, true);
 
@@ -179,7 +179,7 @@ public class RequestDetailView {
         return vBox;
     }
 
-    private VBox addAccommodationData(Accommodation accommodation) {
+    private VBox addAccommodationData(Properties accommodation) {
         Text titleNameLabel = createText("Nom de l'annonce:", 100, TextAlignment.LEFT, false);
         Text nameLabel = createText(accommodation.getName(), 400, TextAlignment.LEFT, true);
 

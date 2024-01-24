@@ -1,5 +1,6 @@
 package com.eseo.lagence.lagence.views;
 
+import com.eseo.lagence.lagence.services.UserService;
 import com.eseo.lagence.lagence.utils.StageManager;
 import com.eseo.lagence.lagence.models.UserAccount;
 import com.eseo.lagence.lagence.services.RequestService;
@@ -173,7 +174,7 @@ public class UsersView {
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);
         gridPane.setVgap(10);
-        ObservableList<UserAccount> users = RequestService.getInstance().getUsers();
+        ObservableList<UserAccount> users = UserService.getUsers();
         UserAccount userLogged = RequestService.getInstance().getUserLogged();
         // Ligne 0
         RowConstraints row0 = new RowConstraints();

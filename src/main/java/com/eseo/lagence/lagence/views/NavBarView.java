@@ -1,7 +1,7 @@
 package com.eseo.lagence.lagence.views;
 
+import com.eseo.lagence.lagence.services.AuthService;
 import com.eseo.lagence.lagence.utils.StageManager;
-import com.eseo.lagence.lagence.services.RequestService;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.geometry.HPos;
@@ -183,7 +183,7 @@ public class NavBarView {
         mailboxButton.setOnAction(event -> {StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);});
         usersButton.setOnAction(event -> {StageManager.getInstance().setView(StageManager.SceneView.USERS_SCENE);});
         disconnectButton.setOnAction(event -> {
-            RequestService.getInstance().logout();
+            AuthService.logout();
             StageManager.getInstance().setView(StageManager.SceneView.LOGIN_SCENE);
         });
 

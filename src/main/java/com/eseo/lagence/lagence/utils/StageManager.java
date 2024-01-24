@@ -1,7 +1,7 @@
 package com.eseo.lagence.lagence.utils;
 
-import com.eseo.lagence.lagence.models.Accommodation;
-import com.eseo.lagence.lagence.models.RequestAccommodation;
+import com.eseo.lagence.lagence.models.Properties;
+import com.eseo.lagence.lagence.models.AccommodationRequest;
 import com.eseo.lagence.lagence.views.*;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -93,12 +93,12 @@ public class StageManager {
         USERS_SCENE,
     }
 
-    public void showModificationAccommodationModal(Accommodation accommodation, AccommodationModalView.Mode mode) {
+    public void showModificationAccommodationModal(Properties accommodation, AccommodationModalView.Mode mode) {
         VBox vBox = new VBox(accommodationModalView.createBox(accommodation, mode));
         setModalScene(new Scene(vBox));
     }
 
-    public void showRequestDetailModal(RequestAccommodation requestAccommodation) {
+    public void showRequestDetailModal(AccommodationRequest requestAccommodation) {
         VBox vBox = new VBox(requestDetailView.createBox(requestAccommodation));
         setModalScene(new Scene(vBox));
     }

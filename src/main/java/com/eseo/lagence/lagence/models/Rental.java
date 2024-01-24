@@ -2,10 +2,10 @@ package com.eseo.lagence.lagence.models;
 
 public class Rental{
     private String id;
-    private Accommodation accommodation;
+    private Properties accommodation;
     private UserAccount user;
 
-    public Rental(String  id, Accommodation accommodation, UserAccount user) {
+    public Rental(String  id, Properties accommodation, UserAccount user) {
         this.id = id;
         this.accommodation = accommodation;
         this.user = user;
@@ -20,11 +20,11 @@ public class Rental{
         this.id = id;
     }
 
-    public Accommodation getAccommodation() {
+    public Properties getAccommodation() {
         return accommodation;
     }
 
-    public void setAccommodation(Accommodation accommodation) {
+    public void setAccommodation(Properties accommodation) {
         this.accommodation = accommodation;
     }
 

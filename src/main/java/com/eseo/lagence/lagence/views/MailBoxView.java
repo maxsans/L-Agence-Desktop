@@ -1,7 +1,8 @@
 package com.eseo.lagence.lagence.views;
 
+import com.eseo.lagence.lagence.services.AccommodationRequestService;
 import com.eseo.lagence.lagence.utils.StageManager;
-import com.eseo.lagence.lagence.models.RequestAccommodation;
+import com.eseo.lagence.lagence.models.AccommodationRequest;
 import com.eseo.lagence.lagence.services.RequestService;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -70,12 +71,12 @@ public class MailBoxView {
     private TableCell createDeclineCell() {
         declineButton = createButton(FontAwesomeIcon.CLOSE, "#1c1c1e");
 
-        return new TableCell<RequestAccommodation, RequestAccommodation>() {
+        return new TableCell<AccommodationRequest, AccommodationRequest>() {
             private final Button declineBtn = createButton(FontAwesomeIcon.CLOSE, "#1c1c1e");
 
             {
                 declineBtn.setOnAction(event -> {
-                    RequestAccommodation requestAccommodation = getTableView().getItems().get(getIndex());
+                    AccommodationRequest requestAccommodation = getTableView().getItems().get(getIndex());
                     if (StageManager.getInstance().showAlert("Êtes-vous sûr de supprimer la demande?")) {
                         System.out.println("OK");
                         String endpoint = "/properties/apply/" + requestAccommodation.getId()+"/"+"refused";
@@ -88,7 +89,7 @@ public class MailBoxView {
             }
 
             @Override
-            protected void updateItem(RequestAccommodation item, boolean empty) {
+            protected void updateItem(AccommodationRequest item, boolean empty) {
                 super.updateItem(item, empty);
                 if (!empty) {
                     declineBtn.setUserData(item);
@@ -103,12 +104,12 @@ public class MailBoxView {
     private TableCell createAcceptCell() {
         acceptButton = createButton(FontAwesomeIcon.CHECK, "#ffa920");
 
-        return new TableCell<RequestAccommodation, RequestAccommodation>() {
+        return new TableCell<AccommodationRequest, AccommodationRequest>() {
             private final Button acceptBtn = createButton(FontAwesomeIcon.CHECK, "#ffa920");
 
             {
                 acceptBtn.setOnAction(event -> {
-                    RequestAccommodation requestAccommodation = getTableView().getItems().get(getIndex());
+                    AccommodationRequest requestAccommodation = getTableView().getItems().get(getIndex());
                     if (StageManager.getInstance().showAlert("Êtes-vous sûr d'accepter la demande?")) {
                         System.out.println("OK");
                         String endpoint = "/properties/apply/" + requestAccommodation.getId()+"/"+"accepted";
@@ -121,7 +122,7 @@ public class MailBoxView {
             }
 
             @Override
-            protected void updateItem(RequestAccommodation item, boolean empty) {
+            protected void updateItem(AccommodationRequest item, boolean empty) {
                 super.updateItem(item, empty);
                 if (!empty) {
                     acceptBtn.setUserData(item);
@@ -145,17 +146,17 @@ public class MailBoxView {
     }
 
 
-    private VBox createTable(ObservableList<RequestAccommodation> requestsAccommodations) {
-        TableView<RequestAccommodation> tableRequests = new TableView<>();
+    private VBox createTable(ObservableList<AccommodationRequest> requestsAccommodations) {
+        TableView<AccommodationRequest> tableRequests = new TableView<>();
         tableRequests.setMinWidth(1402);
         tableRequests.setMaxWidth(1402);
 
         // Create columns
-        TableColumn<RequestAccommodation, String> colFirstName = new TableColumn<>("Prenom");
-        TableColumn<RequestAccommodation, String> colName = new TableColumn<>("Nom");
-        TableColumn<RequestAccommodation, String> colAccommodation = new TableColumn<>("Logement");
-        TableColumn<RequestAccommodation, RequestAccommodation> colAccept = new TableColumn<>("");
-        TableColumn<RequestAccommodation, RequestAccommodation> colDecline = new TableColumn<>("");
+        TableColumn<AccommodationRequest, String> colFirstName = new TableColumn<>("Prenom");
+        TableColumn<AccommodationRequest, String> colName = new TableColumn<>("Nom");
+        TableColumn<AccommodationRequest, String> colAccommodation = new TableColumn<>("Logement");
+        TableColumn<AccommodationRequest, AccommodationRequest> colAccept = new TableColumn<>("");
+        TableColumn<AccommodationRequest, AccommodationRequest> colDecline = new TableColumn<>("");
 
         colFirstName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUser().getFirstName()));
         colName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUser().getLastName()));
@@ -185,10 +186,10 @@ public class MailBoxView {
         tableRequests.setItems(requestsAccommodations);
 
         tableRequests.setRowFactory(tv -> {
-            TableRow<RequestAccommodation> row = new TableRow<>();
+            TableRow<AccommodationRequest> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && !row.isEmpty() && event.getButton() == MouseButton.PRIMARY) {
-                    RequestAccommodation selectedRequest = row.getItem();
+                    AccommodationRequest selectedRequest = row.getItem();
                     System.out.println("OK");
                     StageManager.getInstance().showRequestDetailModal(selectedRequest);
                 }
@@ -220,7 +221,7 @@ public class MailBoxView {
         row1.setVgrow(Priority.ALWAYS);
         gridPane.getRowConstraints().add(row1);
 
-        ObservableList<RequestAccommodation> requestsAccommodations = RequestService.getInstance().getApply();
+        ObservableList<AccommodationRequest> requestsAccommodations = AccommodationRequestService.getApply();
 
         // Ligne 0
         gridPane.add(createTitle(), 0, 0, 1, 1);

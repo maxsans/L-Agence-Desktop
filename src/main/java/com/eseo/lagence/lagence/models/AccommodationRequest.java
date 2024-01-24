@@ -1,9 +1,6 @@
 package com.eseo.lagence.lagence.models;
 
-import com.eseo.lagence.lagence.models.Accommodation;
-import com.eseo.lagence.lagence.models.UserAccount;
-
-public class RequestAccommodation {
+public class AccommodationRequest {
 
     private String id;
 
@@ -12,9 +9,9 @@ public class RequestAccommodation {
     private String proofOfAddressPath;
     private String state;
     private final UserAccount user;
-    private final Accommodation accommodation;
+    private final Properties accommodation;
 
-    public RequestAccommodation(String id, String motivationText, String idCardPath, String proofOfAddressPath, String state,UserAccount user, Accommodation accommodation) {
+    public AccommodationRequest(String id, String motivationText, String idCardPath, String proofOfAddressPath, String state, UserAccount user, Properties accommodation) {
         this.id = id;
         this.motivationText= motivationText;
         this.idCardPath = idCardPath;
@@ -24,12 +21,12 @@ public class RequestAccommodation {
         this.accommodation = accommodation;
     }
 
-    public RequestAccommodation(String id, String userId, String userEmail, String userFirstName, String userLastName,
+    public AccommodationRequest(String id, String userId, String userEmail, String userFirstName, String userLastName,
                                 String accommodationId, String accommodationName, double accommodationPrice, Integer chargesPrice, String accommodationDescription, String accommodationLocation,
                                 int accommodationRooms, int accommodationSize) {
         this.id = id;
         this.user = new UserAccount(userId, userEmail, userFirstName, userLastName);
-        this.accommodation = new Accommodation(accommodationId, accommodationName, accommodationPrice, chargesPrice, accommodationDescription, accommodationLocation,
+        this.accommodation = new Properties(accommodationId, accommodationName, accommodationPrice, chargesPrice, accommodationDescription, accommodationLocation,
                 accommodationRooms, accommodationSize, "apartment");
     }
 
@@ -45,7 +42,7 @@ public class RequestAccommodation {
         return user;
     }
 
-    public Accommodation getAccommodation() {
+    public Properties getAccommodation() {
         return accommodation;
     }
 

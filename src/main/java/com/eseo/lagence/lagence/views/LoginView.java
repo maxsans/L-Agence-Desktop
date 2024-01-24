@@ -1,7 +1,7 @@
 package com.eseo.lagence.lagence.views;
 
+import com.eseo.lagence.lagence.services.AuthService;
 import com.eseo.lagence.lagence.utils.StageManager;
-import com.eseo.lagence.lagence.services.RequestService;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -70,7 +70,7 @@ public class LoginView {
                 return;
             }
 
-            boolean credentialsValid = RequestService.getInstance().login( email.getText(), password.getText());
+            boolean credentialsValid = AuthService.login( email.getText(), password.getText());
             if(credentialsValid){
                 StageManager.getInstance().setView(StageManager.SceneView.ACCOMMODATION_SCENE);
 

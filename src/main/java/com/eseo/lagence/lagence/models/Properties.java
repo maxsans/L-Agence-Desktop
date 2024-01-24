@@ -2,7 +2,7 @@ package com.eseo.lagence.lagence.models;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class Accommodation {
+public class Properties {
 
     private String id;
     private String name;
@@ -14,12 +14,12 @@ public class Accommodation {
     private String type;
     private Integer chargesPrice;
 
-    public Accommodation() {
+    public Properties() {
 
     }
 
-    public Accommodation(String id, String name, Double price, Integer chargesPrice, String description, //
-                         String address, Integer roomsCount, Integer surface, String type) {
+    public Properties(String id, String name, Double price, Integer chargesPrice, String description, //
+                      String address, Integer roomsCount, Integer surface, String type) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -32,10 +32,10 @@ public class Accommodation {
     }
 
 
-    public static Accommodation fromJson(String json) {
+    public static Properties fromJson(String json) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readValue(json, Accommodation.class);
+            return objectMapper.readValue(json, Properties.class);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

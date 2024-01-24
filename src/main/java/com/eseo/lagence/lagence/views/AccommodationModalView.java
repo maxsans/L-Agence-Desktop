@@ -1,7 +1,8 @@
 package com.eseo.lagence.lagence.views;
 
+import com.eseo.lagence.lagence.services.AccommodationService;
 import com.eseo.lagence.lagence.utils.StageManager;
-import com.eseo.lagence.lagence.models.Accommodation;
+import com.eseo.lagence.lagence.models.Properties;
 import com.eseo.lagence.lagence.services.RequestService;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public class AccommodationModalView {
-    private Accommodation accommodation;
+    private Properties accommodation;
     private final TextField nameField = new TextField();
     private final TextField descriptionField = new TextField();
     private final TextField priceField = new TextField();
@@ -51,7 +52,7 @@ public class AccommodationModalView {
         UPDATE
     }
 
-    public VBox createBox(Accommodation accommodation, Mode mode) {
+    public VBox createBox(Properties accommodation, Mode mode) {
         // Accommodation accommodation = new Accommodation("1", "Apparteent Doutre", 12.22, "bla bla bla", "2 rue TB", 2 , 36);
 
         // Create VBox for the name property
@@ -113,7 +114,7 @@ public class AccommodationModalView {
         // Créer un bouton pour valider les modifications
         buttonSave = new Button("Valider");
         buttonSave.setOnAction(event -> {
-            Accommodation accomo = new Accommodation();
+            Properties accomo = new Properties();
             accomo.setId(accommodation.getId());
 
             accomo.setName(nameField.getText());
@@ -129,9 +130,9 @@ public class AccommodationModalView {
             accomo.setType(selectedType);
 
             if (mode == Mode.UPDATE) {
-                RequestService.getInstance().updateProperty(accomo);
+                AccommodationService.updateProperty(accomo);
             } else {
-                RequestService.getInstance().updateProperty(accomo);
+                AccommodationService.updateProperty(accomo);
             }
 
             StageManager.getInstance().setView(StageManager.SceneView.ACCOMMODATION_SCENE);

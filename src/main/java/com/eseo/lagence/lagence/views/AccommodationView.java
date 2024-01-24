@@ -1,7 +1,8 @@
 package com.eseo.lagence.lagence.views;
 
+import com.eseo.lagence.lagence.services.AccommodationService;
 import com.eseo.lagence.lagence.utils.StageManager;
-import com.eseo.lagence.lagence.models.Accommodation;
+import com.eseo.lagence.lagence.models.Properties;
 import com.eseo.lagence.lagence.services.RequestService;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -66,12 +67,12 @@ public class AccommodationView {
     private TableCell createDeleteCell() {
         deleteButton = createDeleteButton(); //make the button unique for the button event listener
 
-        return new TableCell<Accommodation, Accommodation>() {
+        return new TableCell<Properties, Properties>() {
             private final Button delButton = createDeleteButton();
 
             {
                 delButton.setOnAction(event -> {
-                    Accommodation accommodation = getTableView().getItems().get(getIndex());
+                    Properties accommodation = getTableView().getItems().get(getIndex());
                     if (StageManager.getInstance().showAlert("Êtes-vous sûr de supprimer cet élément?")) {
                         System.out.println("OK");
                         String endpoint = "/properties/" + accommodation.getId();
@@ -85,7 +86,7 @@ public class AccommodationView {
             }
 
             @Override
-            protected void updateItem(Accommodation item, boolean empty) {
+            protected void updateItem(Properties item, boolean empty) {
                 super.updateItem(item, empty);
                 if (!empty) {
                     delButton.setUserData(item);
@@ -98,7 +99,7 @@ public class AccommodationView {
     }
 
     private TableCell createPriceCell() {
-        return new TableCell<Accommodation, Double>() {
+        return new TableCell<Properties, Double>() {
             @Override
             protected void updateItem(Double item, boolean empty) {
                 super.updateItem(item, empty);
@@ -132,7 +133,7 @@ public class AccommodationView {
         this.addButton = new Button();
         addButton.setGraphic(addButtonLabel);
         addButton.setOnAction(event -> {
-            StageManager.getInstance().showModificationAccommodationModal(new Accommodation(), AccommodationModalView.Mode.CREATE);
+            StageManager.getInstance().showModificationAccommodationModal(new Properties(), AccommodationModalView.Mode.CREATE);
         });
 
 
@@ -144,16 +145,16 @@ public class AccommodationView {
     }
 
 
-    private VBox createTable(ObservableList<Accommodation> data) {
-        TableView<Accommodation> tableAccommodation = new TableView<>();
+    private VBox createTable(ObservableList<Properties> data) {
+        TableView<Properties> tableAccommodation = new TableView<>();
         tableAccommodation.setMinWidth(1402);
         tableAccommodation.setMaxWidth(1402);
 
         // Create columns
-        TableColumn<Accommodation, String> colName = new TableColumn<>("Nom");
-        TableColumn<Accommodation, Double> colPrice = new TableColumn<>("Prix");
-        TableColumn<Accommodation, String> colLocation = new TableColumn<>("Localisation");
-        TableColumn<Accommodation, Accommodation> colDelete = new TableColumn<>("");
+        TableColumn<Properties, String> colName = new TableColumn<>("Nom");
+        TableColumn<Properties, Double> colPrice = new TableColumn<>("Prix");
+        TableColumn<Properties, String> colLocation = new TableColumn<>("Localisation");
+        TableColumn<Properties, Properties> colDelete = new TableColumn<>("");
 
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
@@ -201,10 +202,10 @@ public class AccommodationView {
         tableAccommodation.setItems(data);
 
         tableAccommodation.setRowFactory(tv -> {
-            TableRow<Accommodation> row = new TableRow<>();
+            TableRow<Properties> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && !row.isEmpty() && event.getButton() == MouseButton.PRIMARY) {
-                    Accommodation accommodation = row.getItem();
+                    Properties accommodation = row.getItem();
                     StageManager.getInstance().showModificationAccommodationModal(accommodation, AccommodationModalView.Mode.UPDATE);
                 }
             });
@@ -223,7 +224,7 @@ public class AccommodationView {
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);
         gridPane.setVgap(10);
-        ObservableList<Accommodation> accommodations = RequestService.getInstance().getAccommodations();
+        ObservableList<Properties> accommodations = AccommodationService.getAccommodations();
         // Ligne 0
         RowConstraints row0 = new RowConstraints();
         row0.setValignment(VPos.TOP);
