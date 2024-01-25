@@ -1,9 +1,9 @@
 package com.eseo.lagence.lagence.views;
 
-import com.eseo.lagence.lagence.utils.StageManager;
-import com.eseo.lagence.lagence.models.Properties;
 import com.eseo.lagence.lagence.models.AccommodationRequest;
+import com.eseo.lagence.lagence.models.Properties;
 import com.eseo.lagence.lagence.services.RequestService;
+import com.eseo.lagence.lagence.utils.StageManager;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.geometry.HPos;
@@ -80,8 +80,8 @@ public class RequestDetailView {
             if (StageManager.getInstance().showAlert("Êtes-vous sûr d'accepter la demande?")) {
                 System.out.println("OK");
                 StageManager.getInstance().deleteModalScene();
-                String endpoint = "/properties/apply/" + requestAccommodation.getId()+"/"+"refused";
-                RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.POST,Optional.empty());
+                String endpoint = "/properties/apply/" + requestAccommodation.getId() + "/" + "refused";
+                RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.PUT, Optional.empty());
                 StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);
             } else {
                 System.out.println("Cancel");
@@ -95,8 +95,8 @@ public class RequestDetailView {
             if (StageManager.getInstance().showAlert("Êtes-vous sûr d'accepter la demande?")) {
                 System.out.println("OK");
                 StageManager.getInstance().deleteModalScene();
-                String endpoint = "/properties/apply/" + requestAccommodation.getId()+"/"+"accepted";
-                RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.POST, Optional.empty());
+                String endpoint = "/properties/apply/" + requestAccommodation.getId() + "/" + "accepted";
+                RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.PUT, Optional.empty());
                 StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);
             } else {
                 System.out.println("Cancel");
@@ -106,7 +106,6 @@ public class RequestDetailView {
 
         grid.add(declineBtn, 0, 2);
         grid.add(acceptBtn, 1, 2);
-
 
 
         // Center text in each cell
@@ -208,20 +207,21 @@ public class RequestDetailView {
         gridAccommodation.setPadding(new Insets(10));
         gridAccommodation.add(titleNameLabel, 0, 0);
         gridAccommodation.add(nameLabel, 1, 0);
-        gridAccommodation.add(titlePriceLabel, 0,1);
+        gridAccommodation.add(titlePriceLabel, 0, 1);
         gridAccommodation.add(priceLabel, 1, 1);
-        gridAccommodation.add(titleDescriptionLabel, 0,2);
+        gridAccommodation.add(titleDescriptionLabel, 0, 2);
         gridAccommodation.add(descriptionLabel, 1, 2);
-        gridAccommodation.add(titleLocationLabel, 0,3);
+        gridAccommodation.add(titleLocationLabel, 0, 3);
         gridAccommodation.add(locationLabel, 1, 3);
-        gridAccommodation.add(titleSizeLabel, 0,4);
+        gridAccommodation.add(titleSizeLabel, 0, 4);
         gridAccommodation.add(sizeLabel, 1, 4);
-        gridAccommodation.add(titleRoomsCountLabel, 0,5);
+        gridAccommodation.add(titleRoomsCountLabel, 0, 5);
         gridAccommodation.add(roomsCountLabel, 1, 5);
 
         VBox vBox = new VBox(gridAccommodation);
         vBox.setAlignment(Pos.CENTER);
-        return vBox;    }
+        return vBox;
+    }
 
     private static Button createDownloadButton(String dossier, String title) {
         Button downloadButton = new Button(title);

@@ -7,6 +7,10 @@ module com.eseo.lagence.lagence {
     requires de.jensd.fx.glyphs.fontawesome;
     requires java.net.http;
     requires com.fasterxml.jackson.databind;
+    requires org.apache.httpcomponents.client5.httpclient5;
+    requires org.apache.httpcomponents.core5.httpcore5;
+    requires org.apache.tika.core;
+    requires java.sql;
 
     opens com.eseo.lagence.lagence to javafx.fxml;
     exports com.eseo.lagence.lagence;

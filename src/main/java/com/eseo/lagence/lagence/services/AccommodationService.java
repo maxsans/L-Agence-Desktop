@@ -7,14 +7,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.entity.mime.FileBody;
+import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
+import org.apache.hc.client5.http.entity.mime.StringBody;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.tika.Tika;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class AccommodationService{
-
-
+public class AccommodationService {
     public static ObservableList<Properties> getAccommodations() {
 
         JsonNode rootNode = RequestService.getInstance().sendHttpRequest("/properties", RequestService.HttpMethod.GET, Optional.empty());
@@ -43,6 +49,46 @@ public class AccommodationService{
         } else {
             System.err.println("Unexpected JSON structure. Unable to deserialize accommodations.");
             return FXCollections.observableArrayList();
+        }
+    }
+
+    public static boolean createProperty(Properties property, List<File> images) {
+        try {
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+
+            // Add properties fields
+            builder.addPart("name", new StringBody(property.getName(), ContentType.TEXT_PLAIN));
+            builder.addPart("description", new StringBody(property.getDescription(), ContentType.TEXT_PLAIN));
+            builder.addPart("address", new StringBody(property.getAddress(), ContentType.TEXT_PLAIN));
+            builder.addPart("price", new StringBody(String.valueOf(property.getPrice()), ContentType.TEXT_PLAIN));
+            builder.addPart("chargesPrice", new StringBody(String.valueOf(property.getChargesPrice()), ContentType.TEXT_PLAIN));
+            builder.addPart("surface", new StringBody(String.valueOf(property.getSurface()), ContentType.TEXT_PLAIN));
+            builder.addPart("type", new StringBody(property.getType(), ContentType.TEXT_PLAIN));
+            builder.addPart("roomsCount", new StringBody(String.valueOf(property.getRoomsCount()), ContentType.TEXT_PLAIN));
+
+            // Add image files
+            if (images != null) {
+                for (File image : images) {
+                    Tika tika = new Tika();
+                    String mimeType = tika.detect(image);
+
+                    FileBody fileBody = new FileBody(image, ContentType.create(mimeType), image.getName());
+                    builder.addPart("images", fileBody);
+                }
+            }
+
+            HttpEntity requestEntity = builder.build();
+
+            String endpoint = "/properties";
+            HttpPost httpPost = new HttpPost(endpoint);
+            httpPost.setEntity(requestEntity);
+
+            JsonNode jsonResponse = RequestService.getInstance().sendHttpRequest(httpPost);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 

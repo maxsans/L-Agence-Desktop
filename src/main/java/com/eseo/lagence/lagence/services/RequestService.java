@@ -1,16 +1,14 @@
 package com.eseo.lagence.lagence.services;
 
-import com.eseo.lagence.lagence.models.Properties;
-import com.eseo.lagence.lagence.models.Rental;
-import com.eseo.lagence.lagence.models.AccommodationRequest;
 import com.eseo.lagence.lagence.models.UserAccount;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.stage.FileChooser;
+import org.apache.hc.client5.http.classic.methods.HttpUriRequest;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,9 +21,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 
@@ -53,6 +48,32 @@ public class RequestService {
         return RequestService.instance;
     }
 
+    public JsonNode sendHttpRequest(HttpUriRequest request) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            // Set the full URI for the request
+            URI fullUri = URI.create(baseUrl + request.getUri());
+            request.setUri(fullUri);
+
+            // Add the Cookie header if present
+            if (this.cookieString != null) {
+                request.setHeader("Cookie", this.cookieString);
+            }
+
+            // Send the request and handle the response
+            try (CloseableHttpResponse httpResponse = httpClient.execute(request)) {
+
+                System.out.println("Status Code: " + httpResponse.getCode());
+                String responseBody = EntityUtils.toString(httpResponse.getEntity());
+                System.out.println("Response Body:\n" + responseBody);
+                return objectMapper.readTree(responseBody);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return objectMapper.createObjectNode();
+        }
+    }
 
     public JsonNode sendHttpRequest(String endpoint, HttpMethod httpMethod, Optional<String> requestBody) {
         HttpClient httpClient = HttpClient.newHttpClient();
@@ -120,11 +141,11 @@ public class RequestService {
         return userLogged;
     }
 
-    public void downloadPicture(String dossierPath){
+    public void downloadPicture(String dossierPath) {
         String urlPath = baseUrl + dossierPath;
         System.out.println("Téléchargement du dossier: " + dossierPath);
         String fileName = dossierPath;
-        fileName.substring("uploads/".length());
+//        fileName.substring("uploads/".length());
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save File");
         fileChooser.setInitialFileName(fileName);

@@ -1,9 +1,9 @@
 package com.eseo.lagence.lagence.views;
 
-import com.eseo.lagence.lagence.services.AccommodationRequestService;
-import com.eseo.lagence.lagence.utils.StageManager;
 import com.eseo.lagence.lagence.models.AccommodationRequest;
+import com.eseo.lagence.lagence.services.AccommodationRequestService;
 import com.eseo.lagence.lagence.services.RequestService;
+import com.eseo.lagence.lagence.utils.StageManager;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.property.SimpleStringProperty;
@@ -79,8 +79,8 @@ public class MailBoxView {
                     AccommodationRequest requestAccommodation = getTableView().getItems().get(getIndex());
                     if (StageManager.getInstance().showAlert("Êtes-vous sûr de supprimer la demande?")) {
                         System.out.println("OK");
-                        String endpoint = "/properties/apply/" + requestAccommodation.getId()+"/"+"refused";
-                        RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.POST, Optional.empty());
+                        String endpoint = "/properties/apply/" + requestAccommodation.getId() + "/" + "refused";
+                        RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.PUT, Optional.empty());
                         StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);
                     } else {
                         System.out.println("Cancel");
@@ -112,8 +112,8 @@ public class MailBoxView {
                     AccommodationRequest requestAccommodation = getTableView().getItems().get(getIndex());
                     if (StageManager.getInstance().showAlert("Êtes-vous sûr d'accepter la demande?")) {
                         System.out.println("OK");
-                        String endpoint = "/properties/apply/" + requestAccommodation.getId()+"/"+"accepted";
-                        RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.POST,Optional.empty());
+                        String endpoint = "/properties/apply/" + requestAccommodation.getId() + "/" + "accepted";
+                        RequestService.getInstance().sendHttpRequest(endpoint, RequestService.HttpMethod.PUT, Optional.empty());
                         StageManager.getInstance().setView(StageManager.SceneView.MAILBOX_SCENE);
                     } else {
                         System.out.println("Cancel");
