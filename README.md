@@ -74,7 +74,3 @@ For server deployment, ensure you have the backend API running and accessible. U
 ## Related
 
 - [L'agence - Web](https://github.com/JAWS-tm/L-agence)
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
